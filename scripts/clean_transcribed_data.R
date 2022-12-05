@@ -2,16 +2,19 @@ library(tidyverse)
 
 p <- '../data'
 f <- list.files(file.path(p, 'raw'), pattern = 'csv$')
-f
 
-
-# Perform for quantitative Benchmarks. 
+################################################################################
+# CLEAN UP THE QUANTITATIVE BENCHMARKS OF VEGETATION COVER BY FUNCTIONAL GROUP
 veg_bench <- read.csv(file.path(p, 'raw', f[grep('Quantitative', f)])) %>% 
   separate(COVER_PRCNT, c('Lower', 'Upper'), sep = '-') %>% 
   mutate(Upper = ifelse(is.na(Upper), 0, Upper))  %>% 
   mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND')) 
 
+write.csv(veg_bench, file.path(p, 'processed', f[grep('Quantitative', f)]), row.names = F)
+rm(veg_bench)
 
+################################################################################
+# CLEAN UP THE QUASI-HOPEFULLY ORDERED PLANT COVERS BY FUNCTIONAL GROUP
 veg_states <- read.csv(file.path(p, 'raw', f[grep('Ordered', f)])) %>% 
   mutate(across(.cols = everything(), ~ str_trim(.x))) %>% 
   mutate(across(where(is.character), ~na_if(., ""))) %>% 
@@ -67,13 +70,12 @@ veg_states <- read.csv(file.path(p, 'raw', f[grep('Ordered', f)])) %>%
          VEG = str_replace(VEG, 'TWONEEDLE PINYON|TWO-NEEDLE PINYON|TWO NEEDLE PINYON|PINYON', 'PIED'),
          VEG = str_replace(VEG, 'UTAH JUNIPER', 'JUOS'),
          
-         
          VEG = str_replace(VEG, 'INVASIVES|INVASIVE', 'NOXIOUS'),
          VEG = str_replace(VEG, 'ANNUAL NON-NATIVES', 'ANNUAL NON-NATIVE'),
          VEG = str_replace(VEG, 'ANNUAL NOXIOUS|NOXIOUS ANNUALS', 'NOXIOUS ANNUAL')
 )
 
-sort(unique(veg_states$VEG))
+# sort(unique(veg_states$VEG))
 
 veg_states <- veg_states %>% 
   mutate(STATE = str_remove(STATE, ' STATE'),
@@ -97,6 +99,12 @@ veg_states <- veg_states %>%
          PHASE.NAME = str_replace(PHASE.NAME, 'W/', 'WITH') 
          ) # SHRULAND
 
+write.csv(veg_states, file.path(p, 'processed', f[grep('Ordered', f)]))
+
+rm(veg_states)
+##################################################################################
+# CLEAN UP THE PRODUCTION VALUES TABLES. 
+
 comm_table <- read.csv(file.path(p, 'raw', f[grep('Production', f)])) %>% 
   drop_na(PHASE) %>%  # blank lines used in the transcription process for clarity
   mutate(
@@ -106,8 +114,9 @@ comm_table <- read.csv(file.path(p, 'raw', f[grep('Production', f)])) %>%
     FUNCTIONAL = str_replace(FUNCTIONAL, 'TREES', 'TREE'),
     
     SYMBOL = str_trim(SYMBOL),
-    SYMBOL = str_to_upper(SYMBOL),
-    YMBOL = str_remove(SYMBOL, '\\t'))
+    SYMBOL = str_to_upper(SYMBOL)) %>% 
+  separate(PRODUCTION, c('Lower', 'Upper'), sep = '-') %>% 
+  mutate(PHASE.NAME = ifelse(PHASE.NAME == "", PHASE, PHASE.NAME))
 
 
 # UPDATE ALL PLANTS WHICH 'ARE' MISSING FROM THE USDA LIST, THESE TYPOS. 
@@ -126,8 +135,6 @@ rm(comm_tab2)
 trouble <- comm_table %>%  # update all codes to appropriate synonyms here. 
   filter(!SYMBOL %in% USDA_pls_codes$Symbol)
 
-sort(unique(trouble$SYMBOL))
-
 comm_table <- comm_table %>% 
   mutate(SYMBOL =  str_replace(SYMBOL, 'GUA', 'GUSA'),
          SYMBOL =  str_replace(SYMBOL, 'ATC0', 'ATCO'),
@@ -141,5 +148,18 @@ comm_table <- comm_table %>%
          SYMBOL =  str_replace(SYMBOL, 'PIDE$', 'PIDE4'),
          SYMBOL =  str_replace(SYMBOL, 'TRLD', 'TRLO'), 
          SYMBOL =  str_replace(SYMBOL, 'PPHO', 'PHLO'),
-         SYMBOL =  str_replace(SYMBOL, 'ERISH', 'ERSH')) 
-  
+         SYMBOL =  str_replace(SYMBOL, 'OXYTRE', 'OXYTR'),
+         SYMBOL =  str_replace(SYMBOL, 'ERISH', 'ERSH'),
+         
+         SYMBOL =  str_replace(SYMBOL, '2FA', 'AF'), 
+         SYMBOL =  str_replace(SYMBOL, '2FP', 'PF'),
+         SYMBOL =  str_replace(SYMBOL, '2GA', 'AG'),
+         SYMBOL =  str_replace(SYMBOL, '2GP', 'PG'),
+         SYMBOL =  str_replace(SYMBOL, '2GRAM', 'GRAM'),
+         SYMBOL =  str_replace(SYMBOL, '2SHRUB', 'SH'),
+         ) 
+
+
+
+write.csv(comm_table, file.path(p, 'raw', f[grep('Production', f)]) )
+rm(comm_table, trouble, USDA_pls_codes, f, p)
