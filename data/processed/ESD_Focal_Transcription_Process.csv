@@ -1,87 +1,87 @@
-"","EcologicalSiteId","UFOPlots","VegMarks.Taxa","ASSOCIATION","PERCENTCOVER","NAME","NOTES"
-"1","R034BY006UT",27,"DONE","DONE","DONE","Alkali Flat (Greasewood)",NA
-"2","R036XY325CO",11,"DONE","DONE","DONE","Semidesert Loam",NA
-"3","R036XY114CO",10,"DONE","DONE","DONE","Mountain Pinyon",NA
-"4","R036XY113CO",9,"DONE","DONE","DONE","Semidesert Juniper Loam",NA
-"5","R036XY284CO",8,"DONE","DONE","DONE","Loamy Foothills",NA
-"6","R034BY109UT",7,"DONE","DONE","DONE","Desert Loamy Clay (Shadscale)",NA
-"7","R034BY106UT",6,"DONE","NONE LISTED","DONE","Desert Loam (Shadscale)",NA
-"8","R034BY117UT",4,"DONE","DONE","DONE","Desert Shallow Clay (Mat Saltbush)",NA
-"9","R036XY287CO",4,"DONE","DONE","DONE","Stony Foothills",NA
-"10","R034BY104UT",3,"DONE","DONE","DONE","Desert Clay (Shadscale)",NA
-"11","R034BY410CO",3,"NOT FOUND","NOT FOUND","NOT FOUND",NA,NA
-"12","F048AY918CO",2,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Spruce-Fir Woodland ",NA
-"13","R034BY322UT",2,"DONE","DONE","DONE","Upland Shallow Loam (Two-Needle Pinyon/ Utah Juniper)",NA
-"14","R034BY402CO",2,"NOT FOUND","NOT FOUND","NOT FOUND",NA,NA
-"15","R034XY401CO",2,"NOT FOUND","NOT FOUND","NOT FOUND","Loamy Saltdesert",NA
-"16","R034XY404CO",2,"NOT FOUND","NOT FOUND","NOT FOUND","Stony Saltdesert ",NA
-"17","R048AY238CO",2,"NOT FOUND","NOT FOUND","NOT FOUND","Brushy Loam",NA
-"18","F048AY449CO",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Aspen Woodland ",NA
-"19","F048AY499CO",1,"NOT FOUND","NOT FOUND","NOT FOUND",NA,NA
-"20","R034BY006UT",1,"DONE","NONE LISTED","DONE","Alkali Flat (Greasewood)",NA
-"21","R034BY112UT",1,"DONE","DONE","DONE","Desert Sand (Fourwing Saltbush)",NA
-"22","R034BY302UT",1,"NONE","DONE","DONE","Upland Clay (Western Wheatgrass)",NA
-"23","R034BY403CO",1,"NOT FOUND","NOT FOUND","NOT FOUND","Clayey Saltdesert",NA
-"24","R034XY410CO",1,"NOT FOUND","NOT FOUND","NOT FOUND","Silty Saltdesert",NA
-"25","R035XY325CO",1,"NOT FOUND","NOT FOUND","NOT FOUND",NA,NA
-"26","R036XY111CO",1,"DONE","DONE","DONE","Steep Shallow Clay Loam (Pinyon-Utah Juniper)",NA
-"27","R036XY289CO",1,"DONE","DONE","DONE","Clayey Foothills ",NA
-"28","R036XY326CO",1,"DONE","DONE","DONE","Semidesert Sandy Loam",NA
-"29","R042XB036NM",1,"DONE","DONE","DONE",NA,NA
-"30","R048AY228CO",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Mountain Loam",NA
-"31","R048AY229CO",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Rocky Loam",NA
-"32","R048AY247CO",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Deep Clay Loam ",NA
-"33","R048AY322UT",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Upland Stony Loam (Basin Big Sagebrush-Saline Wildrye)",NA
-"34","R048AY379CO",1,"NOT WRITTEN","NOT WRITTEN","NOT WRITTEN","Brushy Slopes ",NA
-"35","R035XY413CO",0,"NOT FOUND","NOT FOUND","NOT FOUND","Alkali Bottom",NA
-"36","R036XY110CO",0,"DONE","DONE","DONE","Shallow Clay Loam (Pinyon-Utah Juniper)",NA
-"37","R036XY328CO",0,"DONE","DONE","DONE","Semidesert Clay Loam",NA
-"38","R036XY405CO",0,"DONE","DONE","DONE","Loamy Bottom",NA
-"39","R036XY445CO",0,"DONE","DONE","DONE","Steep Colluvial Slopes",NA
-"40","R034BY212UT",0,"DONE","DONE","DONE","Semidesert Loam (Whyoming Big Sagebrush)",NA
-"41","R034BY248UT",0,"DONE","DONE","DONE","Semidesert Very Steep Loam (Shadscale)",NA
-"42","R034BY240UT",0,"DONE","DONE","DONE","Semidesert Silt Loam (Winterfat)",NA
-"43","R034BY244UT",0,"DONE","DONE","DONE","Semidesert Stony Loam (Salina Wildrye)",NA
-"44","R034BY202UT",0,"DONE","DONE","DONE","Semidesert Bouldery Loam (Shadscale)",NA
-"45","R036XY446CO",0,"DONE","DONE","DONE","Southwestern Mountain (Pinyon-Utah Juniper)",NA
-"46","R036XY142CO",0,"DONE","DONE","DONE","Loamy Mesa Top (Pinyon-Utah Juniper)",NA
-"47","R036XY141CO",0,"DONE","DONE","DONE","Shallow Loamy Mesa Top (Pinyon-Utah Juniper)",NA
-"48","R036XY346CO",0,"DONE","DONE","DONE","Cobbly Foothills",NA
-"49","R035XY409CO",0,"NOT FOUND","NOT FOUND","NOT FOUND","Shallow Desert",NA
-"50","R036XY347CO",0,"DONE","DONE","DONE","Foothill Valley",NA
-"51","R036XY310CO",0,"DONE","DONE","DONE","Sandy Foothills",NA
-"52","R034BY101UT",0,"DONE","NONE LISTED","DONE","Desert Alkali Bench (Castlevalley Saltbush)",NA
-"53","R034BY103UT",0,"DONE","DONE","DONE","Desert Clay (Castlevalley Saltbush)",NA
-"54","R034BY121UT",0,"DONE","DONE","DONE","Desert Shallow Loam (Shadscale)",NA
-"55","R036XY038CO",0,"DONE","DONE","DONE","Wet Meadow",NA
-"56","R034BY227UT",0,"DONE","DONE","DONE","Semidesert Shallow Loam (Black Sagebrush)",NA
-"57","F048AY330UT",0,"NOT FOUND","NOT FOUND","NOT FOUND","Upland Shallow Stony Loam (Two-Needle Pinyon /Douglas Fir)",NA
-"58","R048AY366UT",0,"NOT FOUND","NOT FOUND","NOT FOUND","Upland Very Steep Loam (Salina Wildrye)",NA
-"59","R048AY443UT",0,"NOT FOUND","NOT FOUND","NOT FOUND","Mountain Shallow Loam (Mixed Conifer)",NA
-"60","R034BY115UT",0,"DONE","DONE","DONE","Desert Sandy Loam (Indian Ricegrass)",NA
-"61","R034BY003UT",0,"NONE LISTED","NONE LISTED","NOT FOUND","Alkali Fan (Castlevalley Saltbush)",NA
-"62","R034BY012UT",0,"NONE LISTED","NONE LISTED","NOT FOUND","Sandy Bottom (Fourwind Saltbush)",NA
-"63","R034BY315UT",0,"DONE","DONE","DONE","Upland Shallow Clay Loam (Utah Juniper-Pinyon)",NA
-"64","R035XY263UT",0,"DONE","DONE","DONE","Semidesert Very Steep Stony Loam (Two-Needle Pinyon, Utah Juniper)",NA
-"65","R036XY266CO",0,"DONE","DONE","DONE","Salt Meadow",NA
-"66","R042BB006NM",0,"REJECTED","REJECTED","REJECTED","Gyp Upland, Desert Shrub",NA
-"67","R042BB014NM",0,"REJECTED","REJECTED","REJECTED","Loamy, Desert Shrub","Not found"
-"68","R035XY015UT",0,"DONE","DONE","DONE","Sandy Bottom",NA
-"69","R035XY003UT",0,"DONE","DONE","DONE","Alkali Bottom (Greasewood)",NA
-"70","R035XY011UT",0,"DONE","DONE","DONE","Loamy Bottom (Big Basin Sagebrush)",NA
-"71","R034BY216UT",0,"DONE","DONE","DONE","Semidesert Sandy Loam (Fourwing Saltbush)",NA
-"72","R034BY233UT",0,"DONE","DONE","DONE","Semidesert Shallow Loam (Utah Juniper-Pinyon)",NA
-"73","R034BY205UT",0,"DONE","DONE","DONE","Semidesert Gravelly Loam (Whyoming Big Sagebrush)",NA
-"74","R034BY206UT",0,"DONE","DONE","DONE","Semidesert Gravelly Sandy Loam (Whyoming Big Sagebrush)",NA
-"75","R034BY251UT",0,"DONE","DONE","DONE","Semidesert Very Steep Loam (Whyoming Big Sagebrush)",NA
-"76","R034BY209UT",0,"DONE","NONE LISTED","DONE","Simidesert Loam (Salina Wildrye)",NA
-"77","R034BY225UT",0,"DONE","DONE","DONE","Semidesert Shallow Loam (Whyoming Big Sagebrush)",NA
-"78","R034BY118UT",0,"DONE","DONE","DONE","Desert Shallow Loam (Black Sagebrush)",NA
-"79","R048AY241CO",0,"NOT FOUND","NOT FOUND","NOT FOUND","Mountain Meadow",NA
-"80","R036XB008NM",0,"REJECTED","REJECTED","REJECTED","Meadow ",NA
-"81","F036XA005NM",0,"REJECTED","REJECTED","REJECTED","Raverine Riparian",NA
-"82","R035XY240UT",0,"DONE","DONE","DONE","Semidesert Steep Shallow Loam (Utah Juniper-Two-Needle Pinyon)",NA
-"83","R035XY260UT",0,"REJECTED","REJECTED","REJECTED","Semidesert Very Steep Stony Loam (Salina Wildrye)",NA
-"84","R035XY146UT",0,"DONE","DONE","DONE","Desert Very Steep Stony Loam (Shadscale)",NA
-"85","R035XY262CO",0,"NOT FOUND","NOT FOUND","NOT FOUND","Salt Flats ",NA
-"86","R035XY414CO",0,"NOT FOUND","NOT FOUND","NOT FOUND","Alkali Flat",NA
+EcologicalSiteId,UFOPlots,VegMarks.Taxa,ASSOCIATION,PERCENTCOVER,NAME,NOTES
+R034BY006UT,27,DONE,DONE,DONE,Alkali Flat (Greasewood),NA
+R036XY325CO,11,DONE,DONE,DONE,Semidesert Loam,NA
+R036XY114CO,10,DONE,DONE,DONE,Mountain Pinyon,NA
+R036XY113CO,9,DONE,DONE,DONE,Semidesert Juniper Loam,NA
+R036XY284CO,8,DONE,DONE,DONE,Loamy Foothills,NA
+R034BY109UT,7,DONE,DONE,DONE,Desert Loamy Clay (Shadscale),NA
+R034BY106UT,6,DONE,NONE LISTED,DONE,Desert Loam (Shadscale),NA
+R034BY117UT,4,DONE,DONE,DONE,Desert Shallow Clay (Mat Saltbush),NA
+R036XY287CO,4,DONE,DONE,DONE,Stony Foothills,NA
+R034BY104UT,3,DONE,DONE,DONE,Desert Clay (Shadscale),NA
+R034BY410CO,3,NOT FOUND,NOT FOUND,NOT FOUND,NA,NA
+F048AY918CO,2,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Spruce-Fir Woodland ,NA
+R034BY322UT,2,DONE,DONE,DONE,Upland Shallow Loam (Two-Needle Pinyon/ Utah Juniper),NA
+R034BY402CO,2,NOT FOUND,NOT FOUND,NOT FOUND,NA,NA
+R034XY401CO,2,NOT FOUND,NOT FOUND,NOT FOUND,Loamy Saltdesert,NA
+R034XY404CO,2,NOT FOUND,NOT FOUND,NOT FOUND,Stony Saltdesert ,NA
+R048AY238CO,2,NOT FOUND,NOT FOUND,NOT FOUND,Brushy Loam,NA
+F048AY449CO,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Aspen Woodland ,NA
+F048AY499CO,1,NOT FOUND,NOT FOUND,NOT FOUND,NA,NA
+R034BY006UT,1,DONE,NONE LISTED,DONE,Alkali Flat (Greasewood),NA
+R034BY112UT,1,DONE,DONE,DONE,Desert Sand (Fourwing Saltbush),NA
+R034BY302UT,1,NONE,DONE,DONE,Upland Clay (Western Wheatgrass),NA
+R034BY403CO,1,NOT FOUND,NOT FOUND,NOT FOUND,Clayey Saltdesert,NA
+R034XY410CO,1,NOT FOUND,NOT FOUND,NOT FOUND,Silty Saltdesert,NA
+R035XY325CO,1,NOT FOUND,NOT FOUND,NOT FOUND,NA,NA
+R036XY111CO,1,DONE,DONE,DONE,Steep Shallow Clay Loam (Pinyon-Utah Juniper),NA
+R036XY289CO,1,DONE,DONE,DONE,Clayey Foothills ,NA
+R036XY326CO,1,DONE,DONE,DONE,Semidesert Sandy Loam,NA
+R042XB036NM,1,DONE,DONE,DONE,NA,NA
+R048AY228CO,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Mountain Loam,NA
+R048AY229CO,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Rocky Loam,NA
+R048AY247CO,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Deep Clay Loam ,NA
+R048AY322UT,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Upland Stony Loam (Basin Big Sagebrush-Saline Wildrye),NA
+R048AY379CO,1,NOT WRITTEN,NOT WRITTEN,NOT WRITTEN,Brushy Slopes ,NA
+R035XY413CO,0,NOT FOUND,NOT FOUND,NOT FOUND,Alkali Bottom,NA
+R036XY110CO,0,DONE,DONE,DONE,Shallow Clay Loam (Pinyon-Utah Juniper),NA
+R036XY328CO,0,DONE,DONE,DONE,Semidesert Clay Loam,NA
+R036XY405CO,0,DONE,DONE,DONE,Loamy Bottom,NA
+R036XY445CO,0,DONE,DONE,DONE,Steep Colluvial Slopes,NA
+R034BY212UT,0,DONE,DONE,DONE,Semidesert Loam (Whyoming Big Sagebrush),NA
+R034BY248UT,0,DONE,DONE,DONE,Semidesert Very Steep Loam (Shadscale),NA
+R034BY240UT,0,DONE,DONE,DONE,Semidesert Silt Loam (Winterfat),NA
+R034BY244UT,0,DONE,DONE,DONE,Semidesert Stony Loam (Salina Wildrye),NA
+R034BY202UT,0,DONE,DONE,DONE,Semidesert Bouldery Loam (Shadscale),NA
+R036XY446CO,0,DONE,DONE,DONE,Southwestern Mountain (Pinyon-Utah Juniper),NA
+R036XY142CO,0,DONE,DONE,DONE,Loamy Mesa Top (Pinyon-Utah Juniper),NA
+R036XY141CO,0,DONE,DONE,DONE,Shallow Loamy Mesa Top (Pinyon-Utah Juniper),NA
+R036XY346CO,0,DONE,DONE,DONE,Cobbly Foothills,NA
+R035XY409CO,0,NOT FOUND,NOT FOUND,NOT FOUND,Shallow Desert,NA
+R036XY347CO,0,DONE,DONE,DONE,Foothill Valley,NA
+R036XY310CO,0,DONE,DONE,DONE,Sandy Foothills,NA
+R034BY101UT,0,DONE,NONE LISTED,DONE,Desert Alkali Bench (Castlevalley Saltbush),NA
+R034BY103UT,0,DONE,DONE,DONE,Desert Clay (Castlevalley Saltbush),NA
+R034BY121UT,0,DONE,DONE,DONE,Desert Shallow Loam (Shadscale),NA
+R036XY038CO,0,DONE,DONE,DONE,Wet Meadow,NA
+R034BY227UT,0,DONE,DONE,DONE,Semidesert Shallow Loam (Black Sagebrush),NA
+F048AY330UT,0,NOT FOUND,NOT FOUND,NOT FOUND,Upland Shallow Stony Loam (Two-Needle Pinyon /Douglas Fir),NA
+R048AY366UT,0,NOT FOUND,NOT FOUND,NOT FOUND,Upland Very Steep Loam (Salina Wildrye),NA
+R048AY443UT,0,NOT FOUND,NOT FOUND,NOT FOUND,Mountain Shallow Loam (Mixed Conifer),NA
+R034BY115UT,0,DONE,DONE,DONE,Desert Sandy Loam (Indian Ricegrass),NA
+R034BY003UT,0,NONE LISTED,NONE LISTED,NOT FOUND,Alkali Fan (Castlevalley Saltbush),NA
+R034BY012UT,0,NONE LISTED,NONE LISTED,NOT FOUND,Sandy Bottom (Fourwind Saltbush),NA
+R034BY315UT,0,DONE,DONE,DONE,Upland Shallow Clay Loam (Utah Juniper-Pinyon),NA
+R035XY263UT,0,DONE,DONE,DONE,"Semidesert Very Steep Stony Loam (Two-Needle Pinyon, Utah Juniper)",NA
+R036XY266CO,0,DONE,DONE,DONE,Salt Meadow,NA
+R042BB006NM,0,REJECTED,REJECTED,REJECTED,"Gyp Upland, Desert Shrub",NA
+R042BB014NM,0,REJECTED,REJECTED,REJECTED,"Loamy, Desert Shrub",Not found
+R035XY015UT,0,DONE,DONE,DONE,Sandy Bottom,NA
+R035XY003UT,0,DONE,DONE,DONE,Alkali Bottom (Greasewood),NA
+R035XY011UT,0,DONE,DONE,DONE,Loamy Bottom (Big Basin Sagebrush),NA
+R034BY216UT,0,DONE,DONE,DONE,Semidesert Sandy Loam (Fourwing Saltbush),NA
+R034BY233UT,0,DONE,DONE,DONE,Semidesert Shallow Loam (Utah Juniper-Pinyon),NA
+R034BY205UT,0,DONE,DONE,DONE,Semidesert Gravelly Loam (Whyoming Big Sagebrush),NA
+R034BY206UT,0,DONE,DONE,DONE,Semidesert Gravelly Sandy Loam (Whyoming Big Sagebrush),NA
+R034BY251UT,0,DONE,DONE,DONE,Semidesert Very Steep Loam (Whyoming Big Sagebrush),NA
+R034BY209UT,0,DONE,NONE LISTED,DONE,Simidesert Loam (Salina Wildrye),NA
+R034BY225UT,0,DONE,DONE,DONE,Semidesert Shallow Loam (Whyoming Big Sagebrush),NA
+R034BY118UT,0,DONE,DONE,DONE,Desert Shallow Loam (Black Sagebrush),NA
+R048AY241CO,0,NOT FOUND,NOT FOUND,NOT FOUND,Mountain Meadow,NA
+R036XB008NM,0,REJECTED,REJECTED,REJECTED,Meadow ,NA
+F036XA005NM,0,REJECTED,REJECTED,REJECTED,Raverine Riparian,NA
+R035XY240UT,0,DONE,DONE,DONE,Semidesert Steep Shallow Loam (Utah Juniper-Two-Needle Pinyon),NA
+R035XY260UT,0,REJECTED,REJECTED,REJECTED,Semidesert Very Steep Stony Loam (Salina Wildrye),NA
+R035XY146UT,0,DONE,DONE,DONE,Desert Very Steep Stony Loam (Shadscale),NA
+R035XY262CO,0,NOT FOUND,NOT FOUND,NOT FOUND,Salt Flats ,NA
+R035XY414CO,0,NOT FOUND,NOT FOUND,NOT FOUND,Alkali Flat,NA

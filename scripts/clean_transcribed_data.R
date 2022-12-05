@@ -1,13 +1,14 @@
 library(tidyverse)
 
+setwd('/media/sagesteppe/ExternalHD/UFO_ESD_completion/scripts')
 p <- '../data'
 f <- list.files(file.path(p, 'raw'), pattern = 'csv$')
 
 ################################################################################
 # CLEAN UP THE QUANTITATIVE BENCHMARKS OF VEGETATION COVER BY FUNCTIONAL GROUP
 veg_bench <- read.csv(file.path(p, 'raw', f[grep('Quantitative', f)])) %>% 
-  separate(COVER_PRCNT, c('Lower', 'Upper'), sep = '-') %>% 
-  mutate(Upper = ifelse(is.na(Upper), 0, Upper))  %>% 
+  separate(COVER_PRCNT, c('LOWER', 'UPPER'), sep = '-') %>% 
+  mutate(UPPPER = ifelse(is.na(UPPER), 0, UPPER))  %>% 
   mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND')) 
 
 write.csv(veg_bench, file.path(p, 'processed', f[grep('Quantitative', f)]), row.names = F)
@@ -99,7 +100,7 @@ veg_states <- veg_states %>%
          PHASE.NAME = str_replace(PHASE.NAME, 'W/', 'WITH') 
          ) # SHRULAND
 
-write.csv(veg_states, file.path(p, 'processed', f[grep('Ordered', f)]))
+write.csv(veg_states, file.path(p, 'processed', f[grep('Ordered', f)]),  row.names = F)
 
 rm(veg_states)
 ##################################################################################
@@ -115,7 +116,7 @@ comm_table <- read.csv(file.path(p, 'raw', f[grep('Production', f)])) %>%
     
     SYMBOL = str_trim(SYMBOL),
     SYMBOL = str_to_upper(SYMBOL)) %>% 
- # separate(PRODUCTION, c('Lower', 'Upper'), sep = '-') %>% 
+  #separate(PRODUCTION, c('LOWER', 'UPPER'), sep = '-') %>% 
   mutate(PHASE.NAME = ifelse(PHASE.NAME == "", PHASE, PHASE.NAME))
 
 
@@ -159,7 +160,7 @@ comm_table <- comm_table %>%
          SYMBOL =  str_replace(SYMBOL, '2SHRUB', 'SH'),
          ) 
 
-write.csv(comm_table, file.path(p, 'processed', f[grep('Production', f)]) )
+write.csv(comm_table, file.path(p, 'processed', f[grep('Production', f)]), row.names = F )
 rm(comm_table, trouble, USDA_pls_codes)
 
 
@@ -171,7 +172,7 @@ tracking <- read.csv(file.path(p, 'raw', f[grep('Transcription', f)])) %>%
   filter(!NOTES %in% c('duplicate')) %>% 
   mutate(NAME = str_to_title(NAME))
 
-write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]) )
+write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]), row.names = F )
 
 rm(tracking)
 

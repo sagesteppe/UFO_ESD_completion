@@ -1,0 +1,79 @@
+---
+title: "Ecological Sites of the UFO"
+author: "steppe"
+date: "2022-12-05"
+output:
+  pdf_document: default
+  word_document: default
+header-includes:
+ - \usepackage[width=\textwidth]{caption}
+always_allow_html: yes
+csl: ../citations/citations/apa.csl
+bibliography: ../citations/citations/citations.bib
+link-citations: yes
+---
+
+Ecological Sites are developed by the Natural Resource Conservation System (NRCS). Ecological Sites are models which aim to capture repeating motifs across the landscape. These motifs ....
+
+ESD's are the successors to Range Manual thingies, and their development began in 1997.
+
+ESD's were initially largely used in Arid Rangelands settings, and the status of their completion can be predicted by how well an area fits this description...
+
+ESD's are completed along the USDA's Major Land Resource Areas.. Each MLRA is different, and so are most of their ES- but some have many attributes which carry across the MLRA borders....
+
+In this report, and at the UFO in general, ESD's provide definitive references which we can compare land to. We can assess how our land is in relation to ESD's and these provide actionable decisions which allow the land to be managed with the Multiple use mandate and our RMP in mind...
+
+
+```{r load libraries}
+library(tidyverse)
+```
+
+1) How many ES mapped to in UFO?
+2) does the esd exist
+3) does a state and transition model exist
+4) does vegetation community production table exist. 
+ a. which states
+5) do quantitative benchmarks exist?
+
+```{r import data}
+
+pp <- '../data/processed'
+f <- list.files(pp, pattern = 'csv')
+
+transcription <- read.csv(file.path(pp, f[grep('Transcription', f)]))
+benchmarks <- read.csv(file.path(pp, f[grep('Quantitative', f)]))
+production <- read.csv(file.path(pp, f[grep('Production', f)]))
+ordered <- read.csv(file.path(pp, f[grep('Ordered', f )]))
+
+rm(pp, f)
+```
+
+
+
+```{r}
+# how many ES mapped to in UFO
+filter(transcription, UFOPlots >= 1) # 34
+
+# how many of these ES are completed 
+filter(transcription, UFOPlots >= 1 & VegMarks.Taxa == 'DONE') # 17 are done , 17 are missing
+
+# how many of the plots do these represent
+filter(transcription, UFOPlots >= 1 & VegMarks.Taxa == 'DONE') %>% summarize(PlotESD = sum(UFOPlots)) # 97 plots have ESD's
+filter(transcription, UFOPlots >= 1) %>% summarize(PlotsTotal = sum(UFOPlots)) # 121 plots total have been completed.
+
+```
+
+
+
+```{r Create Heatmap of ESD status}
+
+UFOcal <- filter(transcription, UFOPlots >= 1) %>% select(EcologicalSiteId:VegMarks.Taxa)
+
+
+stateTransition <- ordered %>% 
+  distinct(ESD.CODE) %>% 
+  drop_na() %>%  # need to fix this..
+  mutate(StateTransition = 100)
+```
+
+
