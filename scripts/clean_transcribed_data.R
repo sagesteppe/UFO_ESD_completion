@@ -166,8 +166,13 @@ rm(comm_table, trouble, USDA_pls_codes)
 ################################################################################
 # TRANSCRIPTION TRACKING SHEET
 
-tracking <- read.csv(file.path(p, 'raw', f[grep('Transcription', f)])) #%>% 
-  drop_na(PHASE)
+tracking <- read.csv(file.path(p, 'raw', f[grep('Transcription', f)])) %>% 
+  mutate(across(.cols = everything(), ~ na_if(.x, ""))) %>% 
+  filter(!NOTES %in% c('duplicate')) %>% 
+  mutate(NAME = str_to_title(NAME))
 
+write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]) )
 
-f
+rm(tracking)
+
+rm(f,p)
