@@ -115,7 +115,7 @@ comm_table <- read.csv(file.path(p, 'raw', f[grep('Production', f)])) %>%
     
     SYMBOL = str_trim(SYMBOL),
     SYMBOL = str_to_upper(SYMBOL)) %>% 
-  separate(PRODUCTION, c('Lower', 'Upper'), sep = '-') %>% 
+ # separate(PRODUCTION, c('Lower', 'Upper'), sep = '-') %>% 
   mutate(PHASE.NAME = ifelse(PHASE.NAME == "", PHASE, PHASE.NAME))
 
 
@@ -159,7 +159,15 @@ comm_table <- comm_table %>%
          SYMBOL =  str_replace(SYMBOL, '2SHRUB', 'SH'),
          ) 
 
+write.csv(comm_table, file.path(p, 'processed', f[grep('Production', f)]) )
+rm(comm_table, trouble, USDA_pls_codes)
 
 
-write.csv(comm_table, file.path(p, 'raw', f[grep('Production', f)]) )
-rm(comm_table, trouble, USDA_pls_codes, f, p)
+################################################################################
+# TRANSCRIPTION TRACKING SHEET
+
+tracking <- read.csv(file.path(p, 'raw', f[grep('Transcription', f)])) #%>% 
+  drop_na(PHASE)
+
+
+f
