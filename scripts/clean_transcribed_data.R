@@ -8,8 +8,9 @@ f <- list.files(file.path(p, 'raw'), pattern = 'csv$')
 # CLEAN UP THE QUANTITATIVE BENCHMARKS OF VEGETATION COVER BY FUNCTIONAL GROUP
 veg_bench <- read.csv(file.path(p, 'raw', f[grep('Quantitative', f)])) %>% 
   separate(COVER_PRCNT, c('LOWER', 'UPPER'), sep = '-') %>% 
-  mutate(UPPPER = ifelse(is.na(UPPER), 0, UPPER))  %>% 
-  mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND')) 
+  mutate(UPPER = ifelse(is.na(UPPER), 0, UPPER))  %>% 
+  mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND')) %>% 
+  rename(ECO.SITE = ECOLOGICAL_SITE)
 
 write.csv(veg_bench, file.path(p, 'processed', f[grep('Quantitative', f)]), row.names = F)
 rm(veg_bench)
@@ -74,7 +75,8 @@ veg_states <- read.csv(file.path(p, 'raw', f[grep('Ordered', f)])) %>%
          VEG = str_replace(VEG, 'INVASIVES|INVASIVE', 'NOXIOUS'),
          VEG = str_replace(VEG, 'ANNUAL NON-NATIVES', 'ANNUAL NON-NATIVE'),
          VEG = str_replace(VEG, 'ANNUAL NOXIOUS|NOXIOUS ANNUALS', 'NOXIOUS ANNUAL')
-)
+) %>% 
+  rename(ECO.SITE = ESD.CODE)
 
 # sort(unique(veg_states$VEG))
 
@@ -101,8 +103,8 @@ veg_states <- veg_states %>%
          ) # SHRULAND
 
 write.csv(veg_states, file.path(p, 'processed', f[grep('Ordered', f)]),  row.names = F)
-
 rm(veg_states)
+
 ##################################################################################
 # CLEAN UP THE PRODUCTION VALUES TABLES. 
 
@@ -116,8 +118,10 @@ comm_table <- read.csv(file.path(p, 'raw', f[grep('Production', f)])) %>%
     
     SYMBOL = str_trim(SYMBOL),
     SYMBOL = str_to_upper(SYMBOL)) %>% 
-  #separate(PRODUCTION, c('LOWER', 'UPPER'), sep = '-') %>% 
-  mutate(PHASE.NAME = ifelse(PHASE.NAME == "", PHASE, PHASE.NAME))
+  #separate(PRODUCTION, c('LOWER', 'UPPER'), sep = '-') %>%  
+  rename(LOWER = Lower, UPPER = Upper) %>% 
+  mutate(PHASE.NAME = ifelse(PHASE.NAME == "", PHASE, PHASE.NAME)) %>% 
+  rename(ECO.SITE = ESD.CODE)
 
 
 # UPDATE ALL PLANTS WHICH 'ARE' MISSING FROM THE USDA LIST, THESE TYPOS. 
@@ -160,9 +164,10 @@ comm_table <- comm_table %>%
          SYMBOL =  str_replace(SYMBOL, '2SHRUB', 'SH'),
          ) 
 
+
+
 write.csv(comm_table, file.path(p, 'processed', f[grep('Production', f)]), row.names = F )
 rm(comm_table, trouble, USDA_pls_codes)
-
 
 ################################################################################
 # TRANSCRIPTION TRACKING SHEET
@@ -171,9 +176,13 @@ tracking <- read.csv(file.path(p, 'raw', f[grep('Transcription', f)])) %>%
   mutate(across(.cols = everything(), ~ na_if(.x, ""))) %>% 
   filter(!NOTES %in% c('duplicate')) %>% 
   mutate(NAME = str_to_title(NAME))
+colnames(tracking) <- c('ECO.SITE', 'PLOTS', 'STATETRANSITION.PRODUCTION', 
+                        'ASSOCIATED.SITES', 'QUANTITATIVE.BENCHMARKS', 'ESD.NAME', 'NOTES')
 
 write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]), row.names = F )
-
 rm(tracking)
+
+###############################################################################
+# clean up
 
 rm(f,p)

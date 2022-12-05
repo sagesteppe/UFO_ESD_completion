@@ -41,9 +41,12 @@ pp <- '../data/processed'
 f <- list.files(pp, pattern = 'csv')
 
 transcription <- read.csv(file.path(pp, f[grep('Transcription', f)]))
+
+transcription <- transcription[c(1:19,21:86),]
+
 benchmarks <- read.csv(file.path(pp, f[grep('Quantitative', f)]))
 production <- read.csv(file.path(pp, f[grep('Production', f)]))
-ordered <- read.csv(file.path(pp, f[grep('Ordered', f )]))
+stateTransition <- read.csv(file.path(pp, f[grep('Ordered', f )]))
 
 rm(pp, f)
 ```
@@ -52,28 +55,47 @@ rm(pp, f)
 
 ```{r}
 # how many ES mapped to in UFO
-filter(transcription, UFOPlots >= 1) # 34
+filter(transcription, PLOTS >= 1) # 34
 
 # how many of these ES are completed 
-filter(transcription, UFOPlots >= 1 & VegMarks.Taxa == 'DONE') # 17 are done , 17 are missing
+filter(transcription, PLOTS >= 1 & STATETRANSITION.PRODUCTION == 'DONE') # 17 are done , 17 are missing
 
 # how many of the plots do these represent
-filter(transcription, UFOPlots >= 1 & VegMarks.Taxa == 'DONE') %>% summarize(PlotESD = sum(UFOPlots)) # 97 plots have ESD's
-filter(transcription, UFOPlots >= 1) %>% summarize(PlotsTotal = sum(UFOPlots)) # 121 plots total have been completed.
+filter(transcription, PLOTS >= 1 & STATETRANSITION.PRODUCTION == 'DONE') %>% summarize(PlotESD = sum(PLOTS)) # 97 plots have ESD's
+filter(transcription, PLOTS >= 1) %>% summarize(PlotsTotal = sum(PLOTS)) # 121 plots total have been completed.
 
 ```
 
 
-
 ```{r Create Heatmap of ESD status}
 
-UFOcal <- filter(transcription, UFOPlots >= 1) %>% select(EcologicalSiteId:VegMarks.Taxa)
+UFOcal <- filter(transcription, PLOTS >= 1) %>% select(ECO.SITE:STATETRANSITION.PRODUCTION)
+
+stateTransition <- stateTransition %>% 
+  distinct(ECO.SITE) %>% 
+  drop_na() %>%  # need to fix this.. how it do. 
+  mutate(StateTransition = 1) 
+benchmarks <- benchmarks %>% 
+  distinct(ECO.SITE) %>% 
+  mutate(Benchmark = 1) 
+production <- production %>% 
+  distinct(ECO.SITE) %>% 
+  mutate(Production = 1) 
+
+statusHEATMAP <- left_join(UFOcal, stateTransition, by = 'ECO.SITE') %>% 
+  left_join(., production, by = 'ECO.SITE') %>% 
+  left_join(., benchmarks, by = 'ECO.SITE') %>% 
+  mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
+  select(-STATETRANSITION.PRODUCTION, -PLOTS) %>% 
+  pivot_longer(!ECO.SITE, names_to = 'Table', values_to = 'Value')
 
 
-stateTransition <- ordered %>% 
-  distinct(ESD.CODE) %>% 
-  drop_na() %>%  # need to fix this..
-  mutate(StateTransition = 100)
+ggplot(statusHEATMAP, aes(Table, ECO.SITE, fill = Value)) + 
+  geom_tile() +
+  scale_fill_gradientn(colours = c("red", "yellow", "green"), values = c(0,0.5,1)) +
+  theme(aspect.ratio=5/3) 
+
+rm(stateTransition)
 ```
 
 
