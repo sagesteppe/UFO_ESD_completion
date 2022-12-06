@@ -192,12 +192,23 @@ plottracking <- read.csv(file.path(p, 'raw', f[grep('PlotTracking', f)])) %>%
   filter(STATUS == 'SAMPLED') %>% 
   mutate(ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 
   'No ecosite listed|Need To find 2018 Ecosites' , 'NEED MATCHED')) %>% 
+  mutate(ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R0356XY445CO', 'R036XY445CO'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY109UT', 'R036XY325CO'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY325CO', 'R036XY445CO'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY326CO', 'R036XY326CO'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY315UT', 'R036XY315UT'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R036XY328UT', 'R036XY328CO'),
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY316UT', 'R036XY316UT'),
+         ) %>% 
+  
   mutate(ECO.SITE = str_extract(ECOLOGICAL.SITE, "R0.*?CO|R0.*?UT|F0.*?CO"), 
          ECO.SITE = if_else(is.na(ECO.SITE), ECOLOGICAL.SITE, ECO.SITE), 
          ECO.SITE.MATCHED = str_detect(ECO.SITE, "[0-9]"), 
          PLOT.ID = str_remove(PLOT.ID, 'Note:leave in for now, rejected last year'),
          PANEL = str_to_lower(PANEL)) %>% 
   select(-ECOLOGICAL.SITE, -STATUS)
+
+# 'R036XY328CO' was drafted out of 'R034BY328CO'
 
 write.csv(plottracking, file.path(p, 'processed', 'Plot_Tracking_ESDs.csv'), row.names = F )
 

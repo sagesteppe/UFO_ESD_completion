@@ -40,10 +40,11 @@ library(tidyverse)
 pp <- '../data/processed'
 f <- list.files(pp, pattern = 'csv')
 
-transcription <- read.csv(file.path(pp, f[grep('Transcription', f)]))
+transcription <- read.csv(file.path(pp, f[grep('Transcription', f)])) %>% 
+  distinct(ECO.SITE, .keep_all = T) %>% 
+  select(-PLOTS)
 
-transcription <- transcription[c(1:19,21:86),]
-
+tracking <- read.csv(file.path(pp, f[grep('Tracking', f)]))
 benchmarks <- read.csv(file.path(pp, f[grep('Quantitative', f)]))
 production <- read.csv(file.path(pp, f[grep('Production', f)]))
 stateTransition <- read.csv(file.path(pp, f[grep('Ordered', f )]))
@@ -54,8 +55,13 @@ rm(pp, f)
 
 
 ```{r}
+tracking <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T) & 
+                                  ECO.SITE.MATCHED == TRUE) %>% 
+  select(ECO.SITE) %>% 
+  left_join(., transcription, by = 'ECO.SITE')
+
 # how many ES mapped to in UFO
-filter(transcription, PLOTS >= 1) # 34
+tracking %>% group_by(ECO.SITE) %>% count() %>% print() # 39 are mapped to
 
 # how many of these ES are completed 
 filter(transcription, PLOTS >= 1 & STATETRANSITION.PRODUCTION == 'DONE') # 17 are done , 17 are missing
