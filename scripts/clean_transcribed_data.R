@@ -183,6 +183,25 @@ write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]), row.
 rm(tracking)
 
 ###############################################################################
+# PLOT TRACKING SHEET WITH ESDS
+
+plottracking <- read.csv(file.path(p, 'raw', f[grep('PlotTracking', f)])) %>% 
+  select(Plot.ID, Panel, STATUS = Plot.Status, Ecological.Site) %>% 
+  rename_all(., .funs = toupper) %>% 
+  mutate(STATUS = str_to_upper(STATUS)) %>% 
+  filter(STATUS == 'SAMPLED') %>% 
+  mutate(ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 
+  'No ecosite listed|Need To find 2018 Ecosites' , 'NEED MATCHED')) %>% 
+  mutate(ECO.SITE = str_extract(ECOLOGICAL.SITE, "R0.*?CO|R0.*?UT|F0.*?CO"), 
+         ECO.SITE = if_else(is.na(ECO.SITE), ECOLOGICAL.SITE, ECO.SITE), 
+         ECO.SITE.MATCHED = str_detect(ECO.SITE, "[0-9]"), 
+         PLOT.ID = str_remove(PLOT.ID, 'Note:leave in for now, rejected last year'),
+         PANEL = str_to_lower(PANEL)) %>% 
+  select(-ECOLOGICAL.SITE, -STATUS)
+
+write.csv(plottracking, file.path(p, 'processed', 'Plot_Tracking_ESDs.csv'), row.names = F )
+
+rm(plottracking)
 # clean up
 
 rm(f,p)
