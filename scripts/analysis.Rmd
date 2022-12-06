@@ -55,20 +55,27 @@ rm(pp, f)
 
 
 ```{r}
-tracking <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T) & 
+tracking_vals <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T) & 
                                   ECO.SITE.MATCHED == TRUE) %>% 
   select(ECO.SITE) %>% 
-  left_join(., transcription, by = 'ECO.SITE')
+  left_join(., transcription, by = 'ECO.SITE') 
 
 # how many ES mapped to in UFO
-tracking %>% group_by(ECO.SITE) %>% count() %>% print() # 39 are mapped to
+tracking_vals %>% group_by(ECO.SITE) %>% count() # 38 are mapped to
 
-# how many of these ES are completed 
-filter(transcription, PLOTS >= 1 & STATETRANSITION.PRODUCTION == 'DONE') # 17 are done , 17 are missing
+# how many of these ESDS are completed ?
+tracking_vals %>% 
+  distinct(ECO.SITE, .keep_all = T) %>% 
+  count(STATETRANSITION.PRODUCTION) # portions of at least 23 are complete. 
 
 # how many of the plots do these represent
-filter(transcription, PLOTS >= 1 & STATETRANSITION.PRODUCTION == 'DONE') %>% summarize(PlotESD = sum(PLOTS)) # 97 plots have ESD's
-filter(transcription, PLOTS >= 1) %>% summarize(PlotsTotal = sum(PLOTS)) # 121 plots total have been completed.
+nrow(tracking_vals) # 155 base plots have ESDS
+
+tracking %>% filter(str_detect(PANEL, 'oversample', negate = T)) %>% nrow()
+# 204 of the BASE Plots are completed
+
+tracking %>% nrow()
+# 279 plots were sampled
 
 ```
 
@@ -94,7 +101,6 @@ statusHEATMAP <- left_join(UFOcal, stateTransition, by = 'ECO.SITE') %>%
   mutate(across(where(is.numeric), ~ replace_na(.x, 0))) %>% 
   select(-STATETRANSITION.PRODUCTION, -PLOTS) %>% 
   pivot_longer(!ECO.SITE, names_to = 'Table', values_to = 'Value')
-
 
 ggplot(statusHEATMAP, aes(Table, ECO.SITE, fill = Value)) + 
   geom_tile() +
