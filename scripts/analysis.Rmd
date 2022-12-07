@@ -111,13 +111,15 @@ bottom = 255 - top
 names(bottom) <- NULL
 names(top) <- NULL
 
-
+#
 loss <- vector(mode = "numeric", length = length(bottom))
-for(i in seq(bleed)) {loss[i] <-  bottom[i + 1] - bottom[i] }
+for(i in seq(loss)) {loss[i] <-  bottom[i + 1] - bottom[i] }
 loss <- loss[1:length(loss)-1]
 
-evenLETTERS <- LETTERS[1:26 %% 2 == 0]
-oddLETTERS <- LETTERS[1:26 %% 2 == 0]
+
+is.even <- function(x) x %% 2 == 0
+evenLETTERS <- LETTERS[is.even(1:26)]
+oddLETTERS <- LETTERS[!is.even(1:26)]
 evenLETTERS <- c('A', evenLETTERS) # deal with eccentricities involving A
 evenLETTERS <- evenLETTERS[1:6]
 oddLETTERS <- oddLETTERS[2:6]
@@ -127,12 +129,33 @@ from = sort(c(rep(evenLETTERS[1:length(evenLETTERS)-1], each = 2),
 to = sort( c('C', rep(oddLETTERS[2:length(oddLETTERS)], each = 2), 
              rep(evenLETTERS[2:length(evenLETTERS)], each = 1)))
 
+top <- top[2:length(top)]
+bottom <- bottom[2:(length(bottom)-1)]
+
 quantity <- c(
   top[1], bottom[1], top[2], loss[1], bottom[1], 
-  top[3], loss[2], bottom[2],  top[4], loss[3], 
-  bottom[3], top[5], loss[4], bottom[5]
+  
+  top[3], loss[3], bottom[2], top[4], loss[4], 
+  
+  bottom[3], top[5], loss[4], bottom[4]
 )
 
+#quantity = c(
+# 206, # top[1] 
+# 49, # bottom [1]
+# 157, # top[2]
+# 49, # loss[1]
+# 49, # bottom[1]
+
+# 122, # top[3]
+# 35, # loss[3]
+# 98,  # bottom[2]
+# 115, # top[4]
+# 7, # loss[4]
+# 133, 
+# 49,
+# 66, 
+# 140)
 df = data.frame(from, to, quantity)
 
 nodes <- data.frame(
@@ -148,11 +171,14 @@ colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
 sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Quantitative Benchmarks")
 
-rm(colors, ns, top, bottom, loss, i)
-
+rm(colors, ns)
+quantity
 ```
 
 
 
+```{r}
+
+```
 
 
