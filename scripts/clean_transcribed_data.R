@@ -185,12 +185,22 @@ rm(tracking)
 ###############################################################################
 # PLOT TRACKING SHEET WITH ESDS
 
+original_pts <- st_read(
+  '/media/sagesteppe/ExternalHD/aimDB/data/raw/AIM_Sample_Design/AIM_Design_Stratification.shp',
+  quiet = T)
+
 plottracking <- read.csv(file.path(p, 'raw', f[grep('PlotTracking', f)])) %>% 
   select(Plot.ID, Panel, STATUS = Plot.Status, Ecological.Site) %>% 
   rename_all(., .funs = toupper) %>% 
-  mutate(STATUS = str_to_upper(STATUS)) %>% 
-  filter(STATUS == 'SAMPLED') %>% 
-  mutate(ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 
+  mutate(
+    PANEL = str_to_lower(PANEL),
+    PLOT.ID = str_trim(str_replace_all(PLOT.ID, '[0-9]{1,3}$', 
+                          str_pad(
+                            str_extract(PLOT.ID, '[0-9]{1,3}$'), 3, "left", 0)
+                          )),
+    STATUS = str_to_upper(STATUS),
+    
+    ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 
   'No ecosite listed|Need To find 2018 Ecosites' , 'NEED MATCHED')) %>% 
   mutate(ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R0356XY445CO', 'R036XY445CO'),
          ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY109UT', 'R036XY325CO'),
@@ -199,20 +209,50 @@ plottracking <- read.csv(file.path(p, 'raw', f[grep('PlotTracking', f)])) %>%
          ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY315UT', 'R036XY315UT'),
          ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R036XY328UT', 'R036XY328CO'),
          ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R035XY316UT', 'R036XY316UT'),
-         ) %>% 
+         ECOLOGICAL.SITE = str_replace(ECOLOGICAL.SITE, 'R034XY404CO', 'R034BY404CO'),
+         ) %>% # 'R036XY328CO' was drafted out of 'R034BY328CO'
   
   mutate(ECO.SITE = str_extract(ECOLOGICAL.SITE, "R0.*?CO|R0.*?UT|F0.*?CO"), 
          ECO.SITE = if_else(is.na(ECO.SITE), ECOLOGICAL.SITE, ECO.SITE), 
          ECO.SITE.MATCHED = str_detect(ECO.SITE, "[0-9]"), 
-         PLOT.ID = str_remove(PLOT.ID, 'Note:leave in for now, rejected last year'),
-         PANEL = str_to_lower(PANEL)) %>% 
-  select(-ECOLOGICAL.SITE, -STATUS)
+         PLOT.ID = str_trim(str_remove(PLOT.ID, 'Note:leave in for now, rejected last year'))) %>% 
+  
+  mutate(STATUS = str_trim(STATUS),
+         STATUS = if_else(str_detect(STATUS, 'NOT IN TABLET'), 'NOT SAMPLED', STATUS),
+           STATUS = str_replace(STATUS, 'REJECTION', 'REJECTED')) %>% 
+  select(-ECOLOGICAL.SITE)
 
-# 'R036XY328CO' was drafted out of 'R034BY328CO'
+plottracking <- plottracking %>% 
+  group_by(PLOT.ID) %>% 
+  distinct(., .keep_all = T) 
+pair2keep <- plottracking %>%  # These are odd copies
+  group_by(PLOT.ID) %>% 
+  filter(n() >= 2) %>% 
+  filter(str_detect(STATUS, '^SAMPLED$'))
+
+plottracking <- plottracking %>% 
+  filter(!PLOT.ID %in% pair2keep$PLOT.ID) %>% 
+  bind_rows(., pair2keep)
+rejected_over_notsampled <- plottracking %>% 
+  group_by(PLOT.ID) %>% 
+  distinct(., .keep_all = T) %>% 
+  filter(n() >= 2, STATUS == 'REJECTED')
+
+plottracking <- plottracking %>% 
+  filter(!PLOT.ID %in% rejected_over_notsampled$PLOT.ID) %>% 
+  bind_rows(., rejected_over_notsampled)
+plottracking <- anti_join(original_pts, plottracking, by = c('PLOTID' = 'PLOT.ID')) %>% 
+  select(PLOT.ID = PLOTID, PANEL) %>% 
+  mutate(PANEL = str_to_lower(PANEL)) %>% 
+  mutate(STATUS = 'NOT SAMPLED', ECO.SITE = NA, ECO.SITE.MATCHED = NA) %>% 
+  st_drop_geometry() %>% 
+  bind_rows(., plottracking)
+
+unique(plottracking$ECO.SITE)
 
 write.csv(plottracking, file.path(p, 'processed', 'Plot_Tracking_ESDs.csv'), row.names = F )
 
-rm(plottracking)
+rm(plottracking, original_pts, pair2keep, rejected_over_notsampled)
 # clean up
 
 rm(f,p)
