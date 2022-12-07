@@ -13,6 +13,13 @@ bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(dpi = 300) 
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
 Ecological Sites are developed by the Natural Resource Conservation System (NRCS). Ecological Sites are models which aim to capture repeating motifs across the landscape. These motifs ....
 
 ESD's are the successors to Range Manual thingies, and their development began in 1997.
@@ -64,20 +71,20 @@ tracking_vals <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T)
   left_join(., transcription, by = 'ECO.SITE') 
 
 # how many ES mapped to in UFO
-tracking_vals %>% group_by(ECO.SITE) %>% count() # 38 are mapped to
+esUFO <- tracking_vals %>% group_by(ECO.SITE) %>% count() # 38 are mapped to
 
 # how many of these ESDS are completed ?
-tracking_vals %>% 
-  distinct(ECO.SITE, .keep_all = T) %>% 
-  count(STATETRANSITION.PRODUCTION) # portions of at least 23 are complete. 
+# tracking_vals %>% 
+#  distinct(ECO.SITE, .keep_all = T) %>% 
+#  count(STATETRANSITION.PRODUCTION) # portions of at least 23 are complete. 
 
 # how many of the plots do these represent
-nrow(tracking_vals) # 155 base plots have ESDS
+bp_w_ESD <- nrow(tracking_vals) # 155 base plots have ESDS
 
-tracking %>% filter(str_detect(PANEL, 'oversample', negate = T), str_detect(STATUS, '^SAMPLED')) %>% nrow()
+bp_sampled <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T), str_detect(STATUS, '^SAMPLED')) %>% nrow()
 # 206 of the BASE Plots are completed
 
-tracking %>% nrow()
+plots_sampled <- tracking %>% nrow()
 # 279 plots were sampled
 
 ```
@@ -111,15 +118,12 @@ bottom = 255 - top
 names(bottom) <- NULL
 names(top) <- NULL
 
-#
 loss <- vector(mode = "numeric", length = length(bottom))
 for(i in seq(loss)) {loss[i] <-  bottom[i + 1] - bottom[i] }
 loss <- loss[1:length(loss)-1]
 
-
-is.even <- function(x) x %% 2 == 0
-evenLETTERS <- LETTERS[is.even(1:26)]
-oddLETTERS <- LETTERS[!is.even(1:26)]
+evenLETTERS <- LETTERS[1:26 %% 2 == 0]
+oddLETTERS <- LETTERS[1:26 %% 2 != 0]
 evenLETTERS <- c('A', evenLETTERS) # deal with eccentricities involving A
 evenLETTERS <- evenLETTERS[1:6]
 oddLETTERS <- oddLETTERS[2:6]
@@ -138,28 +142,12 @@ quantity <- c(
   bottom[3], top[5], loss[5], bottom[4]
 )
 
-#quantity = c(
-# 206, # top[1] 
-# 49, # bottom [1]
-# 157, # top[2]
-# 49, # loss[1]
-# 49, # bottom[1]
-
-# 122, # top[3]
-# 35, # loss[3]
-# 98,  # bottom[2]
-# 115, # top[4]
-# 7, # loss[4]
-# 133, 
-# 49,
-# 66, 
-# 140)
 df = data.frame(from, to, quantity)
 
 nodes <- data.frame(
   ID = LETTERS[1:11],
   label = c('Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
-          'Associated', '', 'Benchmarks', ''),
+          'Similar', '', 'Benchmarks', 'Plots'),
   x = c(1, rep(2:6, each = 2)),
   y = c(2, rep(c(2,1), times = 5)),
   label_pos = c('above', rep(c('above', 'below'), times = 5))
@@ -167,10 +155,9 @@ nodes <- data.frame(
 
 colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
-sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Quantitative Benchmarks")
+sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "The Number of base plots which have Quantitative Benchmarks")
 
-rm(colors, ns)
-quantity
+rm(colors, ns, nodes, top, bottom, quantity, evenLETTERS, oddLETTERS, df, i, loss, op, to, from, base_plots)
 ```
 
 
@@ -178,5 +165,8 @@ quantity
 ```{r}
 
 ```
+
+
+# References
 
 
