@@ -26,6 +26,8 @@ In this report, and at the UFO in general, ESD's provide definitive references w
 
 ```{r load libraries}
 library(tidyverse)
+library(PantaRhei)
+library(grid) 
 ```
 
 1) How many ES mapped to in UFO?
@@ -55,7 +57,7 @@ rm(pp, f)
 
 
 
-```{r}
+```{r collect quant values for writeup, echo = F}
 tracking_vals <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T) & 
                                   ECO.SITE.MATCHED == TRUE) %>% 
   select(ECO.SITE) %>% 
@@ -82,39 +84,7 @@ tracking %>% nrow()
 
 
 
-```{r}
-library(networkD3)
-library(dplyr)
- 
-# Make a connection data frame
-links <- data.frame(
-  source=c("group_A","group_A", "group_B", "group_C", "group_C", "group_E"), 
-  target=c("group_C","group_D", "group_E", "group_F", "group_G", "group_H"), 
-  value=c(2,3, 2, 3, 1, 3)
-)
- 
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(
-  name=c(as.character(links$source), as.character(links$target)) %>% 
-    unique()
-)
-
-# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
-links$IDsource <- match(links$source, nodes$name)-1 
-links$IDtarget <- match(links$target, nodes$name)-1
- 
-# prepare color scale: I give one specific color for each node.
-my_color <- 'd3.scaleOrdinal() .domain(["group_A", "group_B","group_C", "group_D", "group_E", "group_F", "group_G", "group_H"]) .range(["blue", "blue" , "blue", "red", "red", "yellow", "purple", "purple"])'
- 
-# Make the Network. I call my colour scale with the colourScale argument
-p <- sankeyNetwork(Links = links, Nodes = nodes, Source = "IDsource", Target = "IDtarget", 
-              Value = "value", NodeID = "name", colourScale=my_color)
-p
-```
-
-
-
-```{r}
+```{r fate of plots graph, echo = F}
 
 base_plots <- tracking %>%
   filter(str_detect(PANEL, 'oversample', negate = T))
@@ -136,12 +106,18 @@ op <- base_plots %>%
   select(-ECO.SITE, SAMPLED = STATUS) %>% 
   colSums()
 
-op <- sort(op, decreasing = T)
-bleed = 255 - op[2:length(op)]
+top <- sort(op, decreasing = T)
+bottom = 255 - top 
+names(bottom) <- NULL
+names(top) <- NULL
 
-is.even <- function(x) x %% 2 == 0
-evenLETTERS <- LETTERS[is.even(1:26)]
-oddLETTERS <- LETTERS[!is.even(1:26)]
+
+loss <- vector(mode = "numeric", length = length(bottom))
+for(i in seq(bleed)) {loss[i] <-  bottom[i + 1] - bottom[i] }
+loss <- loss[1:length(loss)-1]
+
+evenLETTERS <- LETTERS[1:26 %% 2 == 0]
+oddLETTERS <- LETTERS[1:26 %% 2 == 0]
 evenLETTERS <- c('A', evenLETTERS) # deal with eccentricities involving A
 evenLETTERS <- evenLETTERS[1:6]
 oddLETTERS <- oddLETTERS[2:6]
@@ -150,16 +126,18 @@ from = sort(c(rep(evenLETTERS[1:length(evenLETTERS)-1], each = 2),
               rep(oddLETTERS[1:length(oddLETTERS)-1], each = 1)))
 to = sort( c('C', rep(oddLETTERS[2:length(oddLETTERS)], each = 2), 
              rep(evenLETTERS[2:length(evenLETTERS)], each = 1)))
-quantity = c(206, 49, 157, 48, 49, 122, 35, 97, 115, 7, 133, 49, 66, 140)
+
+quantity <- c(
+  top[1], bottom[1], top[2], loss[1], bottom[1], 
+  top[3], loss[2], bottom[2],  top[4], loss[3], 
+  bottom[3], top[5], loss[4], bottom[5]
+)
+
 df = data.frame(from, to, quantity)
-
-
-library(PantaRhei)
-library(grid) 
 
 nodes <- data.frame(
   ID = LETTERS[1:11],
-  label = c('Plots', 'Sampled', '', 'ES Verified', '', 'ESD',  '',
+  label = c('Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
           'Associated', '', 'Benchmarks', ''),
   x = c(1, rep(2:6, each = 2)),
   y = c(2, rep(c(2,1), times = 5)),
@@ -167,9 +145,10 @@ nodes <- data.frame(
 )
 
 colors <- data.frame(substance = "<any>", color = "#008083")
-
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
 sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Quantitative Benchmarks")
+
+rm(colors, ns, top, bottom, loss, i)
 
 ```
 
