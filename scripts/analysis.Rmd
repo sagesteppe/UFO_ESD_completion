@@ -134,10 +134,8 @@ bottom <- bottom[2:(length(bottom)-1)]
 
 quantity <- c(
   top[1], bottom[1], top[2], loss[1], bottom[1], 
-  
   top[3], loss[3], bottom[2], top[4], loss[4], 
-  
-  bottom[3], top[5], loss[4], bottom[4]
+  bottom[3], top[5], loss[5], bottom[4]
 )
 
 #quantity = c(
