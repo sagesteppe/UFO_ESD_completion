@@ -21,9 +21,9 @@ knitr::opts_chunk$set(warning = F)
 ```
 
 
-An *ecological site* is an area of land which is subject to roughly the same climate, soils, and which will produce similar types of vegetation when both undisturbed ('natural') and when disturbed in the same manner, e.g. by wildfire. The idea of Ecological Sites is a broad model which seeks to capture these re-occuring motifs of climate and soils across the landscape in order to guide land managers decisions at geographic levels at which they may effectively achieve desired outcomes, e.g. the level of allotment. The aggregation of areas across the *landscape* reduce the amount of monitoring and research required to make informed land management decisions, and allow for the transfer of successful practices across them to quickly correct possible downward trends in different areas. Each Ecological Site is a concept which inherently captures a range of variation across the landscape, and each site features varying degrees of dissimilarity, however given the resources available to land managers they form the most thorough and useful model for classifying lands.
+An *ecological site* is an area of land which is subject to roughly the same environmental factors, e.g. climate & soils, and which produce similar types of vegetation when both undisturbed and when subjected to the same type of disturbance, e.g. by wildfire (@butler2003national). The idea of Ecological Sites is a broad system of models each of which seeks to capture these re-occuring motifs of climate and soils across the landscape in order to guide land managers decisions at geographic levels at which they may effectively achieve desired outcomes, e.g. the level of allotment. The aggregation of areas across the *landscape* reduce the amount of monitoring and research required to make informed land management decisions, and allow for the transfer of successful practices across them to quickly correct possible downward trends in different areas. Each Ecological Site is a concept which inherently captures a range of variation across the landscape, and each site features varying degrees of dissimilarity, however given the resources available to land managers they form the most thorough and useful model for classifying lands.
 
-Ecological Sites are developed by the Natural Resource Conservation System (NRCS). While the current conception of what an Ecological Site is has theoretical roots in the sciences of Ecology nearly 100 years ago, the formulation of specific ES's under the current paradigm began around 1997 (@brown2010ecological, @karl2010monitoring). Their popularity was a response to the failure of 'one size fits all' management decisions which occurred commonly during the 20th century (@bestelmeyer2010introduction). The existence of Ecological Sites allow more fine tuned assessments of the possibilities which exist at each site, i.e. they can incorporate the number and identity of plant species and their annual growth and land managers can compare the current status of these attributes to the possibilities (@brown2010ecological). 
+Ecological Sites are developed by the Natural Resource Conservation System (NRCS). While the current conception of what an Ecological Site is has theoretical roots in the science of Ecology nearly 100 years ago, the formulation of specific ES's under the current paradigm began around 1997 (@brown2010ecological, @karl2010monitoring). Their popularity was a response to the failure of 'one size fits all' management decisions which occurred commonly during the 20th century (@bestelmeyer2010introduction). The existence of Ecological Sites allow more fine tuned assessments of the possibilities which exist at each site, i.e. they can incorporate the number and identity of plant species and their annual growth and land managers can compare the current status of these attributes to the possibilities (@brown2010ecological). 
 
 The implementation of the formulations of Ecological Sites by the NRCS occurs at the level of *Major Land Resource Areas (MLRA)*, and *Land Resource Units (LRU)* within them. Different MLRA's, and the LRU's within them, are at varying states of completion. Anecdotally, nearly all ES have been established for MLRA 34b, 36, while few have been developed for MLRA 46; in general more arid LRU's are more likely to have complete ES relative to more wet areas. Subsequent to the identification of an individual ES is recording and documenting a variety of it's parameters in a written format known as an *'Ecological Site Description'* (@bestelmeyer2010introduction). These documents follow a standardized format, but also vary in the degree of information which they contain. For example, most descriptions contain tables which cover the *state and transitions models* which occur between vegetation, contain production values for vegetation in a *reference* state and phase, however some will contain production values for multiple states and phases (@bestelmeyer2010practical). Given the high amount of detail and expert knowledge specific to the area of analysis the development of an ES and writing an ESD is a time intensive process (@bestelmeyer2010practical, @moseley2010ecological). 
 
@@ -34,9 +34,7 @@ An important attribute of an Ecological Site Description (ESD) are *benchmarks*,
 > `r tufte::quote_footer('--- Karl & Herrick 2010')`
 
 
-```{r}
-
-```
+Here we summarize the status of knowledge for ESD's across the UFO field office. As our management objectives rely on these values to determine whether our land is within the range of natural variability, they are an essential component of this.
 
 
 
@@ -45,13 +43,6 @@ library(tidyverse)
 library(PantaRhei)
 library(grid) 
 ```
-
-1) How many ES mapped to in UFO?
-2) does the esd exist
-3) does a state and transition model exist
-4) does vegetation community production table exist. 
- a. which states
-5) do quantitative benchmarks exist?
 
 ```{r import data}
 
@@ -71,6 +62,12 @@ stateTransition <- read.csv(file.path(pp, f[grep('Ordered', f )]))
 rm(pp, f)
 ```
 
+1) How many ES mapped to in UFO?
+2) does the esd exist
+3) does a state and transition model exist
+4) does vegetation community production table exist. 
+ a. which states
+5) do quantitative benchmarks exist?
 
 
 ```{r collect quant values for writeup, echo = F}
@@ -79,8 +76,15 @@ tracking_vals <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T)
   select(ECO.SITE) %>% 
   left_join(., transcription, by = 'ECO.SITE') 
 
+no.ES <- tracking %>% filter(STATUS == 'SAMPLED' & ECO.SITE.MATCHED == T) %>% 
+  distinct(ECO.SITE) %>% nrow()
+
+bp_sampled <- tracking %>%
+  filter(str_detect(PANEL, 'oversample', negate = T) & STATUS == 'SAMPLED') %>% 
+  nrow()
+
 # how many ES mapped to in UFO
-esUFO <- tracking_vals %>% group_by(ECO.SITE) %>% count() # 38 are mapped to
+esUFO <- tracking_vals %>% group_by(ECO.SITE) %>% count()  # 38 are mapped to
 
 # how many of these ESDS are completed ?
 # tracking_vals %>% 
@@ -99,6 +103,31 @@ plots_sampled <- tracking %>% nrow()
 ```
 
 
+```{r Plots per ESD}
+
+esUFO %>%
+  ggplot(aes(x = fct_rev(fct_reorder(ECO.SITE, n)), y = n)) +
+  geom_col(show.legend = F) + # or geom_count()
+  labs(x = NULL, y = 'Number of Plots', title = 'Number of AIM plots per ESD') +
+  theme_classic() +
+  ylim(0,20) +
+  theme(
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
+    axis.line.y.left = element_blank(),
+    axis.line.x.bottom = element_blank(),
+    plot.title = element_text(hjust = 0.5)) 
+```
+
+
+
+The `r toString(nrow(tracking[tracking$STATUS == 'SAMPLED',]))` plots sampled by the AIM crew, of which `r nrow(tracking[tracking$STATUS == 'SAMPLED' & tracking$ECO.SITE.MATCHED == T,])`  were mapped to an ESD, resulted in the verification of `r toString(no.ES)` in the UFO field office. However, while we can only make inference on the `r toString(bp_sampled)` base plots which were successfully sampled and verified to `r toString(nrow(esUFO))` Ecological Sites, we see that these plots had a similar success in detecting the number of different ES across the field office.
+
+```{r}
+rm(no.ES, esUFO, bp_sampled)
+```
+
+Given the relatively few numbers of plots per ES, we cannot make conclusions about the status of any individual set of them, i.e. despite only a handful of ESD's composing both the Pinyon-Juniper Woodlands and the Salt Desert we cannot detect whether certain ESD's are in general achieving benchmarks whereas others are not. Our only unit of analysis is whether certain proportions of land across these strata are achieving their benchmarks. 
 
 ```{r fate of plots graph, echo = F}
 
