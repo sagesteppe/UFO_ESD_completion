@@ -8,9 +8,10 @@ f <- list.files(file.path(p, 'raw'), pattern = 'csv$')
 # CLEAN UP THE QUANTITATIVE BENCHMARKS OF VEGETATION COVER BY FUNCTIONAL GROUP
 veg_bench <- read.csv(file.path(p, 'raw', f[grep('Quantitative', f)])) %>% 
   separate(COVER_PRCNT, c('LOWER', 'UPPER'), sep = '-') %>% 
+  rename(ECO.SITE = ECOLOGICAL_SITE) %>% 
   mutate(UPPER = ifelse(is.na(UPPER), 0, UPPER))  %>% 
-  mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND')) %>% 
-  rename(ECO.SITE = ECOLOGICAL_SITE)
+  mutate(COVER_TYPE = str_replace(COVER_TYPE, 'BARGROUND', 'BAREGROUND'), 
+         ECO.SITE = str_replace(ECO.SITE,'R042XB036NM', 'R042BB036NM')) 
 
 write.csv(veg_bench, file.path(p, 'processed', f[grep('Quantitative', f)]), row.names = F)
 rm(veg_bench)
