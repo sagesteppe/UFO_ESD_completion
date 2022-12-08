@@ -1,0 +1,2 @@
+sudo pdftk National_Range_Pasture_Handbook.pdf cat 1-7 27-50 output National_Range_Pasture_Handbook_Ch3.pdf
+
