@@ -257,3 +257,12 @@ rm(plottracking, original_pts, pair2keep, rejected_over_notsampled)
 # clean up
 
 rm(f,p)
+
+
+
+################################################################################
+
+# Identify plots to revisit for quanitative benchmarks
+
+
+
