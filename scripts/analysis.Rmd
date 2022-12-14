@@ -107,7 +107,7 @@ plots_sampled <- tracking %>% nrow()
 
 esUFO %>%
   ggplot(aes(x = fct_rev(fct_reorder(ECO.SITE, n)), y = n)) +
-  geom_col(show.legend = F) + # or geom_count()
+  geom_count(show.legend = F) + # or geom_count()
   labs(x = NULL, y = 'Number of Plots', title = 'Number of AIM plots per ESD') +
   theme_classic() +
   ylim(0,20) +
@@ -118,7 +118,6 @@ esUFO %>%
     axis.line.x.bottom = element_blank(),
     plot.title = element_text(hjust = 0.5)) 
 ```
-
 
 
 The `r toString(nrow(tracking[tracking$STATUS == 'SAMPLED',]))` plots sampled by the AIM crew, of which `r nrow(tracking[tracking$STATUS == 'SAMPLED' & tracking$ECO.SITE.MATCHED == T,])`  were mapped to an ESD, resulted in the verification of `r toString(no.ES)` in the UFO field office. However, while we can only make inference on the `r toString(bp_sampled)` base plots which were successfully sampled and verified to `r toString(nrow(esUFO))` Ecological Sites, we see that these plots had a similar success in detecting the number of different ES across the field office.
