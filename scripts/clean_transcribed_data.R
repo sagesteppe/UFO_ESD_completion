@@ -14,7 +14,6 @@ veg_bench <- read.csv(file.path(p, 'raw', f[grep('Quantitative', f)])) %>%
          ECO.SITE = str_replace(ECO.SITE,'R042XB036NM', 'R042BB036NM')) 
 
 write.csv(veg_bench, file.path(p, 'processed', f[grep('Quantitative', f)]), row.names = F)
-rm(veg_bench)
 
 ################################################################################
 # CLEAN UP THE QUASI-HOPEFULLY ORDERED PLANT COVERS BY FUNCTIONAL GROUP
@@ -181,7 +180,6 @@ colnames(tracking) <- c('ECO.SITE', 'PLOTS', 'STATETRANSITION.PRODUCTION',
                         'ASSOCIATED.SITES', 'QUANTITATIVE.BENCHMARKS', 'ESD.NAME', 'NOTES')
 
 write.csv(tracking, file.path(p, 'processed', f[grep('Transcription', f)]), row.names = F )
-rm(tracking)
 
 ###############################################################################
 # PLOT TRACKING SHEET WITH ESDS
@@ -256,13 +254,27 @@ write.csv(plottracking, file.path(p, 'processed', 'Plot_Tracking_ESDs.csv'), row
 rm(plottracking, original_pts, pair2keep, rejected_over_notsampled)
 # clean up
 
-rm(f,p)
-
-
-
 ################################################################################
 
-# Identify plots to revisit for quanitative benchmarks
+# Identify plots to revisit for quantitative benchmarks in the second iteration
 
+vb <- veg_bench %>% 
+  distinct(ECO.SITE) 
 
+td <- tracking %>% 
+  filter(UFOPlots > 0 & PERCENTCOVER == 'DONE') %>% 
+  select(EcologicalSiteId) %>% 
+  filter(! EcologicalSiteId %in% vb$ECO.SITE)
+
+write.csv(td, '../data/processed/UFOsites2checkforQB.csv', row.names = F)
+
+td_non_UFO <- tracking %>% 
+  filter(UFOPlots == 0 & PERCENTCOVER == 'DONE') %>% 
+  select(EcologicalSiteId) %>% 
+  filter(! EcologicalSiteId %in% vb$ECO.SITE)
+
+write.csv(td_non_UFO, '../data/processed/NonUFOsites2checkforQB.csv')
+
+rm(vb, td, veg_bench, tracking, td_non_UFO)
+rm(f,p)
 
