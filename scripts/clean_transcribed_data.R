@@ -1,4 +1,4 @@
-library(tidyverse)
+library(sf)
 
 setwd('/media/sagesteppe/ExternalHD/UFO_ESD_completion/scripts')
 p <- '../data'

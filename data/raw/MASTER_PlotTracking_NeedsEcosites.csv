@@ -3,7 +3,7 @@ AS-1,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Office - Slo
 AS-6,OverSample 2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Field - Access Denied,Locked gate. Attempted to contact landowner but not listed anywhere. Called their lawyer. No answer,,,,,,,,,,,,NA
 AS-7,OverSample 2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Field - Slope > 50%,"Unable to reach plot center due to steep, loose slopes",,,,,,,,,,,,NA
 AS-8,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,,,Mixed Mountain Shrub with Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/10/2018,38.87089,-108.15863,Need To find 2018 Ecosites
-GR-21,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Grassland,Ken Holsinger,,,,Pinyon Juniper Woodland or Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/14/2018,38.36678,-108.57239,Need To find 2018 Ecosites
+GR-21,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Grassland,Ken Holsinger,,,,Pinyon Juniper Woodland or Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/14/2018,38.36678,-108.57239,R036XY114CO
 GR-26,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Grassland,Ken Holsinger,,,,,,,,,,,,,,,NA
 GR-27,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Grassland,Ken Holsinger,,,,,,,,,,,,,,,NA
 GR-28,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Grassland,Ken Holsinger,,,,,,,,,,,,,,,NA
@@ -13,11 +13,11 @@ MC-43,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,Fie
 MC-56,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,,,Mixed Conifer,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/7/2018,38.31559,-107.63129,Need To find 2018 Ecosites
 MC-57,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,,,Pinyon Juniper Woodland or Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/11/2018,38.87,-108.17428,Need To find 2018 Ecosites
 MC-58,OverSample 2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,Office - Slope > 50%,Unable to move 50 meters in any direction,,,,,,,,,,,,NA
-MMS-71,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/5/2018,38.63836,-108.48341,Need To find 2018 Ecosites
+MMS-71,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/5/2018,38.63836,-108.48341,R048AY238CO
 MMS-72,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/28/2018,38.45227,-108.1319,Need To find 2018 Ecosites
-MMS-73,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/4/2018,38.32482,-107.86259,Need To find 2018 Ecosites
-MMS-74,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/10/2018,38.61922,-107.76064,Need To find 2018 Ecosites
-MMS-75,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/2/2018,38.4788406,-108.6808074,Need To find 2018 Ecosites
+MMS-73,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/4/2018,38.32482,-107.86259,R036XY325CO
+MMS-74,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/10/2018,38.61922,-107.76064,R048AY238CO
+MMS-75,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/2/2018,38.4788406,-108.6808074,R036XY284CO
 MMS-96,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,,,,,,,,,,,,NA
 MMS-97,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,,,,,,,,,,,,NA
 MMS-98,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Mountain Shrub,Ken Holsinger,,,,,,,,,,,,,,,NA
@@ -25,15 +25,15 @@ OT-111,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Other,Ken Holsinger,,,,Other,Ter
 OT-116,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Other,Ken Holsinger,,,,,,,,,,,,,,,NA
 OT-117,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Other,Ken Holsinger,,,,,,,,,,,,,,,NA
 OT-118,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Other,Ken Holsinger,,,,,,,,,,,,,,,NA
-PJ-131,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,5/31/2018,38.76742,-107.60166,Need To find 2018 Ecosites
-PJ-132,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/13/2018,38.26392,-108.38282,Need To find 2018 Ecosites
-PJ-133,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland -also ARNO4 and PUTR,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/1/2018,38.1362,-108.66058,Need To find 2018 Ecosites
-PJ-134,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,Office - Unsafe to sample,The hike into the plot would require repel gear,,,,,,,,,,,,Need To find 2018 Ecosites
-PJ-135,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,Field - Access Denied,Denied access by landowner. Attempted to contact other people in the area with no luck,,,,,,,,,,,,Need To find 2018 Ecosites
+PJ-131,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,5/31/2018,38.76742,-107.60166,R036XY289CO
+PJ-132,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/13/2018,38.26392,-108.38282,R036XY284CO
+PJ-133,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland -also ARNO4 and PUTR,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/1/2018,38.1362,-108.66058,R036XY284CO
+PJ-134,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,Office - Unsafe to sample,The hike into the plot would require repel gear,,,,,,,,,,,,NA
+PJ-135,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,Field - Access Denied,Denied access by landowner. Attempted to contact other people in the area with no luck,,,,,,,,,,,,NA
 PJ-156,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland or Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/23/2018,38.20472,-108.31038,Need To find 2018 Ecosites
 PJ-157,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/28/2018,38.18673,-108.59132,Need To find 2018 Ecosites
 PJ-158,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Pinyon Juniper Woodland,Ken Holsinger,,,,,,,,,,,,,,,NA
-PP-171,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/30/2018,38.37545,-109.037536,Need To find 2018 Ecosites
+PP-171,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/30/2018,38.37545,-109.037536,R048AY228CO
 PP-176,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,,,,,,,,,,,,NA
 PP-177,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,,,,,,,,,,,,NA
 PP-178,OverSample 2018,Not Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,,,,,,,,,,,,NA
@@ -43,20 +43,20 @@ RI-193,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,Field -
 RI-206,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,,,Riparian,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/19/2018,38.896809,-107.492096,Need To find 2018 Ecosites
 RI-207,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Moved 50m north due to steep slope,7/30/2018,38.37843,-108.53902,Need To find 2018 Ecosites
 RI-208,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/25/2018,38.38847,-107.90445,Need To find 2018 Ecosites
-SS-221,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,5/29/2018,38.34075,-107.97868,Need To find 2018 Ecosites
-SS-222,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/29/2018,38.87656,-107.7477,Need To find 2018 Ecosites
-SS-223,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/6/2018,38.62469,-108.27887,Need To find 2018 Ecosites
-SS-224,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/12/2018,38.2164,-108.79117,Need To find 2018 Ecosites
-SS-225,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe or Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/28/2018,38.4851,-108.0487,Need To find 2018 Ecosites
+SS-221,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,5/29/2018,38.34075,-107.97868,R036XY114CO
+SS-222,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/29/2018,38.87656,-107.7477,R048AY247CO
+SS-223,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/6/2018,38.62469,-108.27887,R036XY113CO
+SS-224,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/12/2018,38.2164,-108.79117,R036XY284CO
+SS-225,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe or Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/28/2018,38.4851,-108.0487,R036XY113CO
 SS-226,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,Field - Slope > 50%,"In deep ravine, unable to move",,,,,,,,,,,,NA
-SS-227,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/25/2018,38.68673705,-108.2573,Need To find 2018 Ecosites
-SS-228,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Plot on border of private property. Moved 50 meters north ,6/14/2018,38.31976,-108.62241,Need To find 2018 Ecosites
-SS-229,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/26/2018,38.41965,-107.9761,Need To find 2018 Ecosites
-SS-230,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Grassland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/9/2018,38.84484,-108.142,Need To find 2018 Ecosites
-SS-231,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Moved 50m east due to maintained road crossing,7/3/2018,38.4049,-108.777,Need To find 2018 Ecosites
-SS-232,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Moved 50m north due to maintained road crossing,6/13/2018,38.2389,-108.4636,Need To find 2018 Ecosites
-SS-233,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/27/2018,38.27689,-107.7122,Need To find 2018 Ecosites
-SS-234,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/12/2018,38.6646,-107.8835,Need To find 2018 Ecosites
+SS-227,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/25/2018,38.68673705,-108.2573,R036XY113CO
+SS-228,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Plot on border of private property. Moved 50 meters north ,6/14/2018,38.31976,-108.62241,R036XY326CO
+SS-229,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/26/2018,38.41965,-107.9761,R036XY326CO
+SS-230,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Grassland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/9/2018,38.84484,-108.142,R036XY326CO
+SS-231,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Moved 50m east due to maintained road crossing,7/3/2018,38.4049,-108.777,R036XY326CO
+SS-232,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Moved 50m north due to maintained road crossing,6/13/2018,38.2389,-108.4636,R036XY326CO
+SS-233,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/27/2018,38.27689,-107.7122,R048AY238CO
+SS-234,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/12/2018,38.6646,-107.8835,R034BY006UT
 SS-235,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,Field - Slope > 50%,Unable to move 50 meters in any direction,,,,,,,,,,,,NA
 SS-236,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,Office - Slope > 50%,unable to move 50 meters using Google Earth and have slopes <50%,,,,,,,,,,,,NA
 SS-301,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/25/2018,38.4946,-108.1513,Need To find 2018 Ecosites
@@ -65,24 +65,24 @@ SS-303,OverSample 2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Hols
 SS-304,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/30/2018,38.3811,-108.6987,Need To find 2018 Ecosites
 SD-321,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Office - Slope > 50%,unable to move 50 meters using Google Earth and have slopes <50%,,,,NO,,,,,,,,NA
 SD-322,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Office - Slope > 50%,unable to move 50 meters using Google Earth and have slopes <50%,,,,,,,,,,,,NA
-SD-323,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,"5/22/2018, 5/23/2018, 5/24/2018",38.60885,-108.14396,Need To find 2018 Ecosites
-SD-324,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/5/2018,38.53119,-107.79086,Need To find 2018 Ecosites
-SD-325,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/4/2018,38.84625,-108.21495,Need To find 2018 Ecosites
-SD-326,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/11/2018,38.46436,-108.81012,Need To find 2018 Ecosites
-SD-327,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/5/2018,38.77102,-108.18233,Need To find 2018 Ecosites
-SD-328,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/26/2018,38.56085,-107.82764,Need To find 2018 Ecosites
+SD-323,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,"5/22/2018, 5/23/2018, 5/24/2018",38.60885,-108.14396,R036XY325CO
+SD-324,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/5/2018,38.53119,-107.79086,R034BY117UT
+SD-325,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/4/2018,38.84625,-108.21495,R034BY404CO
+SD-326,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/11/2018,38.46436,-108.81012,R036XY325CO
+SD-327,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/5/2018,38.77102,-108.18233,R034BY117UT
+SD-328,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/26/2018,38.56085,-107.82764,R034BY109UT
 SD-329,2018,Rejected,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Site not sampled,Duplicate plot as intensification design,,,,,,,,,,,,NA
-SD-330,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,50 meters north due to >50% slope,6/12/2018,38.29163,-108.70637,Need To find 2018 Ecosites
-SD-331,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert or Grassland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Plot moved 50 m to the east due to slope,6/25/2018,38.69866,-108.2114,Need To find 2018 Ecosites
-SD-332,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/12/2018,38.68056,-107.9033,Need To find 2018 Ecosites
-SD-333,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/24/2018,38.85852,-107.9933,Need To find 2018 Ecosites
-SD-334,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/23/2018,38.7855,-108.1309,Need To find 2018 Ecosites
-SD-335,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/24/2018,38.65291,-108.1958,Need To find 2018 Ecosites
+SD-330,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Pinyon Juniper Woodland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,50 meters north due to >50% slope,6/12/2018,38.29163,-108.70637,R036XY114CO
+SD-331,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert or Grassland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Plot moved 50 m to the east due to slope,6/25/2018,38.69866,-108.2114,R034BY106UT
+SD-332,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/12/2018,38.68056,-107.9033,R034BY104UT
+SD-333,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/24/2018,38.85852,-107.9933,NO ECOSITE LISTED
+SD-334,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/23/2018,38.7855,-108.1309,R034BY404CO
+SD-335,2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/24/2018,38.65291,-108.1958,R036XY113CO
 SD-396,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/17/2018,38.71801,-108.2361,Need To find 2018 Ecosites
 SD-397,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/4/2018,38.82104,-108.23696,Need To find 2018 Ecosites
 SD-398,OverSample 2018,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/17/2018,38.7357,-108.2094,Need To find 2018 Ecosites
-MC-044,2019,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/26/2018,38.8172,-107.54768,Need To find 2018 Ecosites
-AS-002,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Slope>50%,9/21/2019,37.9944,-108.1346,No ecosite listed
+MC-044,2019,Sampled,CO,UNCOMPAHGRE FIELD OFFICE,Mixed Conifer,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/26/2018,38.8172,-107.54768,R048AY228CO
+AS-002,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Slope>50%,9/21/2019,37.9944,-108.1346,NO ECOSITE LISTED
 AS-006,Oversample 2018,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
 AS-007,Oversample 2018,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
 AS-009,Oversample 2019,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Aspen,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
@@ -117,7 +117,7 @@ PJ-141,2020,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Pinon-Juniper,Ken Holsinge
 PJ-144,2020,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Pinon-Juniper,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
 PP-172,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Ponderosa Pine,Ken Holsinger,,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/28/2019,38.6009,-108.2841,R035XY408CO
 RI-194,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Slope >50%,6/30/2019,38.5367,-108.1234,R036XY113CO
-RI-195,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,"Partial sage steppe, but mostly PJ",,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/22/2019,38.2055,-108.403,No ecosite listed
+RI-195,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,"Partial sage steppe, but mostly PJ",,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/22/2019,38.2055,-108.403,UNMATCHABLE
 RI-196,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Riparian,Ken Holsinger,,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,7/20/2019,38.2901,-108.764,R036XY113CO
 SD-329,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,6/9/2019,38.8002,-108.2447,R034XY410CO
 SD-336,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,,,6/10/2019,38.7883,-107.8671,R034XY403CO
@@ -131,7 +131,7 @@ SD-343,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,
 SD-344,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/20/2019,38.5509,-107.8672,R034BY104UT
 SD-345,2019,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Field - Slope > 50%,,,,,NO,,,,,,,,NA
 SD-346,2019,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Archeology Site,,,,,,,,,,,,,NA
-SD-347,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/1/2019,38.6826,-108.2498,No ecosite listed
+SD-347,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,8/1/2019,38.6826,-108.2498,R034BY106UT
 SD-348,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/19/2019,38.6539,-107.9288,R034BY109UT
 SD-349,2019,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
 SD-350,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Salt Desert,Ken Holsinger,,,,Salt Desert,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,,,5/29/2019,38.6715,-107.957,R034BY104UT
@@ -150,10 +150,10 @@ SS-244,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,
 SS-245,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Mixed Mountain Shrub,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,6/19/2019,38.3991,-108.0615,R036XY114CO
 SS-246,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe (No sage but transitioning to Sage steppe),Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,Yes,"Transect crossed road, moved east",6/6/2019,38.8264,-108.2061,R034XY404CO
 SS-247,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,,,,Sage Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/7/2019,38.4113,-108.7685,R035XY326CO
-SS-248,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,Some Ponderosa Pine,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/21/2019,38.2485,-108.6462,No ecosite listed
+SS-248,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,Some Ponderosa Pine,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/21/2019,38.2485,-108.6462,R036XY114CO
 SS-249,2019,Rejected,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,,Office - Slope > 50%,,,,,,,,,,,,,NA
-SS-250,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,Raft to,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/8/2019,38.7294,-107.8351,No ecosite listed
-SS-251,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,,,,Sage-Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/19/2019,38.2968,-108.9681,No ecosite listed
+SS-250,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,Raft to,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/8/2019,38.7294,-107.8351,SOMETHING WRONG WITH COORDINATES???
+SS-251,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,,,,Sage-Steppe,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/19/2019,38.2968,-108.9681,R036XY325CO
 SS-252,2019,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,No,,7/22/2019,38.2274,-108.3756,R035XY325CO
 SS-253,2020,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage-Steppe,Ken Holsinger,,,,Pinon-Juniper,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,NO,,9/6/2019,38.4786,-108.1009,No ecosite listed
 SS-254,2020,Sampled,Colorado,UNCOMPAHGRE FIELD OFFICE,Sage Steppe,Ken Holsinger,"Some MMS qualities, mostly GR",,,Grassland,Terrestrial AIM ,Random - NOC or SHINY generated design,NO,,,YES,Slope >50%,8/15/2019,38.8846,-107.5297,No ecosite listed
@@ -352,7 +352,7 @@ SS-294,2022,REJECTED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,NA
 SS-295,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,R036XY114CO
 SS-296,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,UNMATCHABLE
 SS-297,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,R034BY106UT
-SS-298,2022,SAMPLED,CO,UFO,SSN,Ken Holsinger,,,,,,,,,,,,,,,NEED MATCHED
+SS-298,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,NEED MATCHED
 SS-299,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,R036XY325CO
 SS-300,2022,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,R034XY327CO
 SS-305,Oversample 2019,SAMPLED,CO,UFO,SS,Ken Holsinger,,,,,,,,,,,,,,,R036XY113CO
