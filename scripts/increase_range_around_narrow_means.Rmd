@@ -42,20 +42,36 @@ benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>%
 
 
 Let's create 4 columns, forb - grass - shrub -tree, and then one panel for each with plot on the Y
-```{r}
+```{r Dummy encode ranges of variation by Functional Group}
 
 bm <- benchmarks %>% 
   mutate(RANGE = UPPER - LOWER, MEAN = (UPPER+LOWER)/2 )  %>% 
   pivot_longer(cols = LOWER:UPPER, names_to = 'ESTIMATE', values_to = 'COVER')  %>% 
   filter(!COVER_TYPE %in% c('LITTER', 'BAREGROUND'))
 
-bm %>%  # something something ... something like this should convey the idea of the lower left quad being off... 
+bm %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_point() +
   theme_bw()
 
+r3up <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
+  filter(RANGE > 3) %>%  #
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
+
+r3up %>% 
+  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
+  geom_point() +
+  geom_smooth(method = 'lm') + # maybe grab the slope from here and do some dummy var for it...
+  theme_bw()
+
+anova( model <- lm(RANGE ~ MEAN + COVER_TYPE, data = r3up) ) 
+
+```
+
+
+```{r Plot Initial variation}
 bm %>% 
   ggplot() +
   geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
