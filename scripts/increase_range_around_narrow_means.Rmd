@@ -1,0 +1,70 @@
+---
+title: "Increase Variation Around Narrow ESD Concepts"
+author: NULL
+date: NULL
+output:
+  pdf_document: default
+  word_document: default
+header-includes:
+ - \usepackage[width=\textwidth]{caption}
+always_allow_html: yes
+csl: ../citations/citations/apa.csl
+bibliography: ../citations/citations/citations.bib
+link-citations: yes
+---
+
+The quantitative benchmarks of ESDs are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and under following multiple disturbances. They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the relevant MLRA. 
+
+Some of the Quantitative Benchmarks for Ecological Sites which we collected from ESD's were very narrow. In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. 
+
+We seek to identify and broaden the estimates around these ESD's here. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(dpi = 300) 
+knitr::opts_chunk$set(message = F)
+knitr::opts_chunk$set(warning = F)
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+ppro <- '../data/processed'
+f <- list.files(ppro, pattern = 'csv')
+
+benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>% 
+  filter(ECO.SITE != 'R042BB036NM')
+```
+
+
+Let's create 4 columns, forb - grass - shrub -tree, and then one panel for each with plot on the Y
+```{r}
+
+bm <- benchmarks %>% 
+  mutate(RANGE = UPPER - LOWER, MEAN = (UPPER+LOWER)/2 )  %>% 
+  pivot_longer(cols = LOWER:UPPER, names_to = 'ESTIMATE', values_to = 'COVER')  %>% 
+  filter(!COVER_TYPE %in% c('LITTER', 'BAREGROUND'))
+
+bm %>%  # something something ... something like this should convey the idea of the lower left quad being off... 
+  filter(MEAN >= 1) %>% 
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
+  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
+  geom_point() +
+  theme_bw()
+
+bm %>% 
+  ggplot() +
+  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
+  facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
+       y = 'Ecological Site', x = 'Fractional Cover')
+
+```
+
+

@@ -198,7 +198,7 @@ df = data.frame(from, to, quantity)
 
 nodes <- data.frame(
   ID = LETTERS[1:11],
-  label = c('Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
+  label = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
           'Similar', '', 'Benchmarks', 'Benchmarks'),
   x = c(1, rep(2:6, each = 2)), y = c(2, rep(c(2,1), times = 5)),
   label_pos = c('above', rep(c('above', 'below'), times = 5))
@@ -206,7 +206,7 @@ nodes <- data.frame(
 
 colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
-sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of base plots which have Quantitative Benchmarks")
+sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots which have Quantitative Benchmarks")
 
 rm(colors, ns, nodes, top, bottom, quantity, evenLETTERS, oddLETTERS, df, i, loss, op, to, from, base_plots)
 ```
