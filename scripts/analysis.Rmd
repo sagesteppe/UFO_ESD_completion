@@ -59,6 +59,10 @@ benchmarks <- read.csv(file.path(pp, f[grep('Quantitative', f)]))
 production <- read.csv(file.path(pp, f[grep('Production', f)]))
 stateTransition <- read.csv(file.path(pp, f[grep('Ordered', f )]))
 
+benchmarks <- benchmarks %>% 
+  distinct(ECO.SITE) %>% 
+  mutate(QUANTITATIVE.BENCHMARKS = 1)
+
 rm(pp, f)
 ```
 
@@ -71,7 +75,8 @@ rm(pp, f)
 
 
 ```{r collect quant values for writeup, echo = F}
-tracking_vals <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T) & 
+tracking_vals <- tracking %>% 
+  filter(#str_detect(PANEL, 'oversample', negate = T) & 
                                   ECO.SITE.MATCHED == TRUE) %>% 
   select(ECO.SITE) %>% 
   left_join(., transcription, by = 'ECO.SITE') 
@@ -80,7 +85,8 @@ no.ES <- tracking %>% filter(STATUS == 'SAMPLED' & ECO.SITE.MATCHED == T) %>%
   distinct(ECO.SITE) %>% nrow()
 
 bp_sampled <- tracking %>%
-  filter(str_detect(PANEL, 'oversample', negate = T) & STATUS == 'SAMPLED') %>% 
+  filter(#str_detect(PANEL, 'oversample', negate = T) & 
+    STATUS == 'SAMPLED') %>% 
   nrow()
 
 # how many ES mapped to in UFO
@@ -94,7 +100,9 @@ esUFO <- tracking_vals %>% group_by(ECO.SITE) %>% count()  # 38 are mapped to
 # how many of the plots do these represent
 bp_w_ESD <- nrow(tracking_vals) # 155 base plots have ESDS
 
-bp_sampled <- tracking %>% filter(str_detect(PANEL, 'oversample', negate = T), str_detect(STATUS, '^SAMPLED')) %>% nrow()
+bp_sampled <- tracking %>% 
+  filter(#str_detect(PANEL, 'oversample', negate = T), 
+    str_detect(STATUS, '^SAMPLED')) %>% nrow()
 # 206 of the BASE Plots are completed
 
 plots_sampled <- tracking %>% nrow()
@@ -105,18 +113,24 @@ plots_sampled <- tracking %>% nrow()
 
 ```{r Plots per ESD}
 
-esUFO %>%
-  ggplot(aes(x = fct_rev(fct_reorder(ECO.SITE, n)), y = n)) +
-  geom_count(show.legend = F) + # or geom_count()
-  labs(x = NULL, y = 'Number of Plots', title = 'Number of AIM plots per ESD') +
+esUFO %>% 
+  left_join(., benchmarks, by = 'ECO.SITE') %>% 
+  mutate(QUANTITATIVE.BENCHMARKS = replace_na(QUANTITATIVE.BENCHMARKS, 0),
+         QUANTITATIVE.BENCHMARKS = if_else(str_detect(QUANTITATIVE.BENCHMARKS, '1'), 'PRESENT', 'ABSENT')) %>% 
+  
+  ggplot() +
+  geom_point(aes(x = fct_rev(fct_reorder(ECO.SITE, n)), y = n, color = QUANTITATIVE.BENCHMARKS),  size = 4) +
+  scale_colour_manual('Benchmarks', values = c('PRESENT' = 'grey75', 'ABSENT' = 'black' )) +
+  labs(x = NULL, y = 'Number of Plots', title = 'Number of AIM plots per Ecological Site') +
   theme_classic() +
-  ylim(0,20) +
+  scale_y_continuous(breaks=c(0,5,10, 20, 30)) + 
   theme(
-    axis.text.x=element_blank(),
+    axis.text.x = element_text(angle = 45, hjust =1,  size= 6),
     axis.ticks.x=element_blank(),
     axis.line.y.left = element_blank(),
     axis.line.x.bottom = element_blank(),
-    plot.title = element_text(hjust = 0.5)) 
+    plot.title = element_text(hjust = 0.5)
+    ) 
 ```
 
 
@@ -132,16 +146,18 @@ Given the relatively few numbers of plots per ES, we cannot make conclusions abo
 
 base_plots <- tracking %>%
   filter(str_detect(PANEL, 'oversample', negate = T))
+# technically we do start with 255 plots, but we picked up on oversample !!!
 
 benchmarks <- benchmarks %>% 
   distinct(ECO.SITE) %>% 
   mutate(QUANTITATIVE.BENCHMARKS = 1)
 
-op <- base_plots %>% 
+op <- tracking %>% 
+  filter(STATUS == 'SAMPLED') %>% 
   select(-PANEL, -PLOT.ID) %>% 
   left_join(., transcription, by = 'ECO.SITE') %>% 
   select(-QUANTITATIVE.BENCHMARKS) %>% 
-  left_join(., benchmarks, by = 'ECO.SITE')  %>% 
+  left_join(., benchmarks, by = 'ECO.SITE')   %>% 
   mutate(ECO.SITE.MATCHED = replace_na(ECO.SITE.MATCHED, FALSE),
          ECO.SITE.MATCHED = if_else(ECO.SITE.MATCHED == T, 1, 0),
          BASE.PLOTS = 1,
