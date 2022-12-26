@@ -13,11 +13,9 @@ bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
-The quantitative benchmarks of ESDs are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and under following multiple disturbances. They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the relevant MLRA. 
+The quantitative benchmarks of ESDs are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances (CITE). They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the relevant MLRA. Some of the quantitative benchmarks, of the fractional cover of functional vegetation groups, for Ecological Sites which we collected from ESD's were very narrow. In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the vegetation benchmarks while generating the cover estimates. This may be due to them only collecting quantitative vegetation data at a single site, and not across multiple time points, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
 
-Some of the Quantitative Benchmarks for Ecological Sites which we collected from ESD's were very narrow. In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. 
-
-We seek to identify and broaden the estimates around these ESD's here. 
+Well that approach is prudent, it is not prudent for us to assume such narrow ranges of variation. These may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. Here we seek to identify and broaden these estimates, we will use a simple method of *imputing* values in the context of *feature engineering*. A *linear model* will be fit to the benchmark values, which contain realistic ranges, and then the slope of this model will be used to fill in the missing values.  
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F)
@@ -32,30 +30,35 @@ library(tidyverse)
 ```
 
 
-```{r}
+```{r Import Data}
 ppro <- '../data/processed'
 f <- list.files(ppro, pattern = 'csv')
 
 benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>% 
-  filter(ECO.SITE != 'R042BB036NM')
+  filter(ECO.SITE != 'R042BB036NM') %>% 
+  mutate(COVER_TYPE = str_to_sentence(COVER_TYPE))
+
+lifeform_pal <- setNames(
+  c('#30A934', '#860FAE','#DD4513', '#e7b013'),
+  c('Grass', 'Forb', 'Tree', 'Shrub')
+)
+
 
 rm(ppro, f)
 ```
 
-
-Let's create 4 columns, forb - grass - shrub -tree, and then one panel for each with plot on the Y
 ```{r Dummy encode ranges of variation by Functional Group}
 
 bm <- benchmarks %>% 
   mutate(RANGE = UPPER - LOWER, MEAN = (UPPER+LOWER)/2 )  %>% 
   pivot_longer(cols = LOWER:UPPER, names_to = 'ESTIMATE', values_to = 'COVER')  %>% 
-  filter(!COVER_TYPE %in% c('LITTER', 'BAREGROUND'))
+  filter(!COVER_TYPE %in% c('Litter', 'Bareground'))
 
-bm %>%  #  something like this should convey the idea of the lower left quad being off... 
+rawplot <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
-  geom_point() +
+  geom_jitter() +
   
   geom_segment(aes(x =  0, y = 3, xend = 10, yend = 3), colour = "Black", lty = 2) +
   geom_segment(aes(x = 10, y = 4, xend = 20, yend = 4), colour = "Black", lty = 2) +
@@ -66,23 +69,18 @@ bm %>%  #  something like this should convey the idea of the lower left quad bei
   geom_segment(aes(x = 20, y = 4, xend = 20, yend = 5), colour = "Black", lty = 2) +
   geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
   
-  theme_bw()
+  theme_bw() +
+  labs(x = NULL, y = NULL) + 
+  xlim(0,50) + ylim(0,30) +
+  scale_color_manual('Functional Group', values = lifeform_pal) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        legend.position = "none")
 
 rm(benchmarks)
 ```
 
-Narrow ranges of variation were defined as 
-
-
-   Mean        Range
----------    ----------
-  < 10          < 3
-10 -  20        < 4
-20 -  30        < 5
-30 -  50        < 6
-50 - 100        < 7
-   
-   
 ```{r Plot Initial variation}
 
 r3up <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
@@ -99,15 +97,6 @@ predict_data <- bm %>%
   filter(MEAN > 20, RANGE <= 5) %>% 
   bind_rows(r3down)
 
-
-keep_ranges %>% 
-  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
-  geom_point() +
-  geom_smooth(method = 'lm') + # maybe grab the slope from here and do some dummy var for it...
-  theme_bw()
-
-summary(model)
-
 bm %>% 
   ggplot() +
   geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
@@ -115,28 +104,103 @@ bm %>%
   theme_bw() + 
   theme(plot.title = element_text(hjust = 0.5)) +
   labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
-       y = 'Ecological Site', x = 'Fractional Cover')
+       y = NULL, x = NULL)
 
 rm(r3up, r3down)
 ```
 
 
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These XX values were removed from the initial data set. The remaining XX observations were used as **training** data for the linear models. Once the linear model was *fitted*, the removed data points had estimates of their values recorded. 
+
+   Mean        Range
+---------    ----------
+  < 10          < 3
+10 -  20        < 4
+20 -  30        < 5
+30 -  50        < 6
+
+
+$\text{Range} \sim  \text{Mean + Functional Group}$
+
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
+model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges)
+# anova(model)
+# model
+# summary(model)
 
-anova( model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges) ) 
+# par(mfrow=c(2,2))
+# plot(model)
+
+
+# direction looks wrong on these ... 
+
 prediction <- predict(model, newdata = predict_data, interval = 'prediction', level = 0.8)
 prediction <- cbind(predict_data, prediction)
 
-predict(lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges), keep_ranges, se.fit = TRUE) 
- 
- 
 # 2. Regression line + confidence intervals
+predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
+  geom_jitter() +
+  theme_bw() +
+  stat_smooth(method = "lm", show.legend = NULL)+
+  geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
+  xlim(0,50) + ylim(0,30) +
+  labs(x = NULL, y = NULL) +
+  scale_color_manual('Functional Group', values = lifeform_pal) +
+  
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), 
+        legend.position = "none")
 
-ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
-  geom_point() +
-  stat_smooth(method = lm) +
-  geom_line(aes(y = lwr), color = "red", linetype = "dashed")+
-  geom_line(aes(y = upr), color = "red", linetype = "dashed")
+predplot
+
 ```
+
+```{r Add predicted ranges to dataset}
+
+# Round prediction to whole number
+final_values <- prediction %>% 
+  mutate(RANGE = round(fit, 0)) %>% 
+  select(ECO.SITE:COVER) %>% 
+  bind_rows(., keep_ranges)
+
+
+finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
+  filter(MEAN >= 1) %>% 
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
+  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
+  geom_jitter() +
+  theme_bw() +
+  labs(x = NULL, y = NULL) +
+  xlim(0,50) + ylim(0,30) +
+  scale_color_manual('Functional Group', values = lifeform_pal) +
+  theme(legend.position = "none") #
+
+legplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
+  filter(MEAN >= 1) %>% 
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
+  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
+  geom_jitter() +
+  theme_bw() +
+  labs(x = NULL, y = NULL) +
+  xlim(0,50) + ylim(0,30) +
+  scale_color_manual('Functional Group', values = lifeform_pal) +
+  theme(legend.position = "bottom") # 
+
+
+```
+
+
+```{r}
+
+legend <- cowplot::get_legend(
+  legplot 
+)
+
+cowplot::plot_grid(rawplot, predplot, finalplot, legend, ncol = 1, rel_heights = c(1, 1, 1, 0.3))
+
+
+```
+
 
