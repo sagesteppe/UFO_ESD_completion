@@ -38,6 +38,8 @@ f <- list.files(ppro, pattern = 'csv')
 
 benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>% 
   filter(ECO.SITE != 'R042BB036NM')
+
+rm(ppro, f)
 ```
 
 
@@ -54,24 +56,58 @@ bm %>%  #  something like this should convey the idea of the lower left quad bei
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_point() +
+  
+  geom_segment(aes(x =  0, y = 3, xend = 10, yend = 3), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 10, y = 4, xend = 20, yend = 4), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 20, y = 5, xend = 30, yend = 5), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 30, y = 6, xend = 50, yend = 6), colour = "Black", lty = 2) +
+
+  geom_segment(aes(x = 10, y = 3, xend = 10, yend = 4), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 20, y = 4, xend = 20, yend = 5), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
+  
   theme_bw()
 
-r3up <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
-  filter(RANGE > 3) %>%  #
-  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
+rm(benchmarks)
+```
 
-r3up %>% 
+Narrow ranges of variation were defined as 
+
+
+   Mean        Range
+---------    ----------
+  < 10          < 3
+10 -  20        < 4
+20 -  30        < 5
+30 -  50        < 6
+50 - 100        < 7
+   
+   
+```{r Plot Initial variation}
+
+r3up <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
+  filter(RANGE > 3, MEAN < 20) %>%  #
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
+keep_ranges <- bm %>% 
+  filter(MEAN > 20, RANGE > 5) %>% 
+  bind_rows(r3up)
+
+r3down <- bm %>%  
+  filter(RANGE <= 3, MEAN < 20) %>%  
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
+predict_data <- bm %>% 
+  filter(MEAN > 20, RANGE <= 5) %>% 
+  bind_rows(r3down)
+
+
+keep_ranges %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_point() +
   geom_smooth(method = 'lm') + # maybe grab the slope from here and do some dummy var for it...
   theme_bw()
 
-anova( model <- lm(RANGE ~ MEAN + COVER_TYPE, data = r3up) ) 
+summary(model)
 
-```
-
-
-```{r Plot Initial variation}
 bm %>% 
   ggplot() +
   geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
@@ -81,6 +117,26 @@ bm %>%
   labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
        y = 'Ecological Site', x = 'Fractional Cover')
 
+rm(r3up, r3down)
 ```
 
+
+```{r Model the Range of Variation for Estimates of Functional Group Covers}
+
+
+anova( model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges) ) 
+prediction <- predict(model, newdata = predict_data, interval = 'prediction', level = 0.8)
+prediction <- cbind(predict_data, prediction)
+
+predict(lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges), keep_ranges, se.fit = TRUE) 
+ 
+ 
+# 2. Regression line + confidence intervals
+
+ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  geom_line(aes(y = lwr), color = "red", linetype = "dashed")+
+  geom_line(aes(y = upr), color = "red", linetype = "dashed")
+```
 
