@@ -24,10 +24,12 @@ knitr::opts_chunk$set(message = F)
 knitr::opts_chunk$set(warning = F)
 ```
 
+```{r Install Libraries if required, eval = F}
+# install.packages('patchwork')
+```
 
 ```{r Load Libraries}
 library(tidyverse)
-library(patchwork)
 ```
 
 
@@ -57,7 +59,7 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
-  geom_jitter() +
+  geom_jitter(width = 0.1) +
   
   geom_segment(aes(x =  0, y = 3, xend = 10, yend = 3), colour = "Black", lty = 2) +
   geom_segment(aes(x = 10, y = 4, xend = 20, yend = 4), colour = "Black", lty = 2) +
@@ -69,8 +71,8 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
   geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
   
   theme_bw() +
-  labs(x = NULL, y = NULL, title = NULL, subtitle = 'Original Data') + 
-  xlim(0,50) + ylim(0,30) +
+  labs(x = NULL, y = "", title = NULL, subtitle = 'Original Data') + 
+  xlim(0,50) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -79,7 +81,7 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
-rm(benchmarks)
+# rm(benchmarks)
 ```
 
 ```{r Plot Initial variation}
@@ -95,23 +97,24 @@ r3down <- bm %>%
   filter(RANGE <= 3, MEAN < 20) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
 predict_data <- bm %>% 
-  filter(MEAN > 20, RANGE <= 5) %>% 
+  filter(MEAN >= 20, RANGE <= 5) %>% 
   bind_rows(r3down)
 
-bm %>% 
-  ggplot() +
-  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
-  facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
-  theme_bw() + 
-  theme(plot.title = element_text(hjust = 0.5)) +
-  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
-       y = NULL, x = NULL)
+# bm %>% 
+#  ggplot() +
+#  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
+#  facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
+#  theme_bw() + 
+#  theme(plot.title = element_text(hjust = 0.5)) +
+#  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
+#       y = NULL, x = NULL)
 
-rm(r3up, r3down)
+
+rm(r3up, r3down, bm)
 ```
 
 
-Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These XX values were removed from the initial data set. The remaining XX observations were used as **training** data for the linear model: $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). Once the linear model was *fit*, the removed data points had estimates of their values recorded. 
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). 
 
    Mean        Range       Percent*
 ---------    ----------   ----------
@@ -122,37 +125,30 @@ Ranges of estimated benchmark variation were estimated as being too low if they 
 
 * This calculated as the *range* divided by the midpoint of the *mean* multipled by 100 to gather a percentile, $\frac{max(Range)} {\text{lower Mean + upper Mean)}} * 100$ 
 
-
-We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of it decreases. 
-
-The model, found that functional type has a very strong effect on the slope of the trend line `r` , and there was strong evidence that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates decreased by `r round(model$coefficients[['MEAN']], 3)` percent. 
+We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
 model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges)
-anova(model)
-summary(model)
+anovaTABLE <- anova(model)
+colnames(anovaTABLE)[5] <- 'p'
 
-
-broom::glance(model)
-
-round(model$coefficients[['MEAN']], 3)
+broomSUM <- broom::glance(model)
 
 # par(mfrow=c(2,2))
 # plot(model)
-
 
 prediction <- predict(model, newdata = predict_data, interval = 'prediction', level = 0.8)
 prediction <- cbind(predict_data, prediction)
 
 # 2. Regression line + confidence intervals
 predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
-  geom_jitter() +
+  geom_jitter(width = 0.1)  + 
   theme_bw() +
   stat_smooth(method = "lm", show.legend = NULL)+
   geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
   xlim(0,50) + ylim(0,30) +
-  labs(x = NULL, y = NULL, subtitle  = 'Predictions from Linear Models', title = NULL) +
+  labs(x = NULL, y = 'Range', subtitle  = 'Predictions from Linear Models', title = NULL) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   
   theme(axis.title.x=element_blank(),
@@ -162,55 +158,64 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
+rm(predict_data)
 ```
+
+
+This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the *response variables...*. It found that functional type has a very strong effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was strong evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates decreased by `r round(model$coefficients[['MEAN']], 3)` percent. 
+
+Once the linear model was *fit*, the removed data points had estimates of their values recorded. 
 
 ```{r Add predicted ranges to dataset}
 
 # Round prediction to whole number
 final_values <- prediction %>% 
   mutate(RANGE = round(fit, 0)) %>% 
-  select(ECO.SITE:COVER) %>% 
+  select(ECO.SITE:COVER) %>% # need to make same format for lower an dupper 
   bind_rows(., keep_ranges)
 
 finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
-  geom_jitter() +
+  geom_jitter(width = 0.1)  +
   theme_bw() +
-  labs(x = NULL, y = NULL, title = NULL, subtitle  = 'Final Data') +
-  xlim(0,50) + ylim(0,30) +
+  labs(x = NULL, y = "", title = NULL, subtitle  = 'Final Data with Imputed Values') +
+  xlim(0,50) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
+  scale_x_continuous(breaks = seq(from = 0, to = 50, by = 5 )) + 
   theme(legend.position = "none",
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8)) 
 
-legend <- 
-   cowplot::get_legend(
+legend <- cowplot::get_legend(
      
   ggplot(final_values, aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter() +
   scale_color_manual('Functional Group:', values = lifeform_pal) +
   theme(legend.position = "bottom",
         legend.key = element_rect(fill = "white"))
-  
 )
 
-# rm(lifeform_pal, predict_data, prediction)
+rm(lifeform_pal, predict_data, prediction, broomSUM, anovaTABLE, keep_ranges, model)
 ```
 
 
-```{r}
+```{r Plot Final Values, fig.cap = 'Imputing the values for '}
 
 patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
                       heights=c(1, 1, 1, 0.3)) +
-  plot_annotation(title = 'Imputing Ranges Around Mean Values in ESDs')
+  patchwork::plot_annotation(title = 'Imputed Ranges Around Mean Values')
 
 ```
 
-
-```{r}
+```{r remove the plots}
 rm(rawplot, predplot, finalplot, legend)
+```
+
+```{r ensure all input data is here and write out the results to csv}
+
+# remember gotta make the lower and uppers have the new values !!!!!!!!!!!!!!
 ```
 
 
