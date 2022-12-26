@@ -25,12 +25,13 @@ knitr::opts_chunk$set(warning = F)
 ```
 
 
-```{r}
+```{r Load Libraries}
 library(tidyverse)
+library(patchwork)
 ```
 
 
-```{r Import Data}
+```{r Import Data and define palette}
 ppro <- '../data/processed'
 f <- list.files(ppro, pattern = 'csv')
 
@@ -40,9 +41,7 @@ benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>%
 
 lifeform_pal <- setNames(
   c('#30A934', '#860FAE','#DD4513', '#e7b013'),
-  c('Grass', 'Forb', 'Tree', 'Shrub')
-)
-
+  c('Grass', 'Forb', 'Tree', 'Shrub') )
 
 rm(ppro, f)
 ```
@@ -70,13 +69,15 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
   geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
   
   theme_bw() +
-  labs(x = NULL, y = NULL) + 
+  labs(x = NULL, y = NULL, title = NULL, subtitle = 'Original Data') + 
   xlim(0,50) + ylim(0,30) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
-        legend.position = "none")
+        legend.position = "none",
+        plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
+        plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
 rm(benchmarks)
 ```
@@ -145,15 +146,15 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
   stat_smooth(method = "lm", show.legend = NULL)+
   geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
   xlim(0,50) + ylim(0,30) +
-  labs(x = NULL, y = NULL) +
+  labs(x = NULL, y = NULL, subtitle  = 'Linear Model Predictions', title = NULL) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(), 
-        legend.position = "none")
-
-predplot
+        legend.position = "none",
+        plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
+        plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
 ```
 
@@ -172,34 +173,36 @@ finalplot <- final_values %>%  #  something like this should convey the idea of 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter() +
   theme_bw() +
-  labs(x = NULL, y = NULL) +
+  labs(x = NULL, y = NULL, title = NULL, subtitle  = 'Final') +
   xlim(0,50) + ylim(0,30) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
-  theme(legend.position = "none") #
+  theme(legend.position = "none",
+        plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
+        plot.subtitle = element_text(hjust = 0.01, vjust = -8)) 
 
-legplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
-  filter(MEAN >= 1) %>% 
-  distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
-  ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
+legend <- 
+   cowplot::get_legend(
+     
+  ggplot(final_values, aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter() +
-  theme_bw() +
-  labs(x = NULL, y = NULL) +
-  xlim(0,50) + ylim(0,30) +
-  scale_color_manual('Functional Group', values = lifeform_pal) +
-  theme(legend.position = "bottom") # 
-
+  scale_color_manual('Functional Group:', values = lifeform_pal) +
+  theme(legend.position = "bottom",
+        legend.key = element_rect(fill = "white"))
+  
+)
 
 ```
 
 
 ```{r}
 
-legend <- cowplot::get_legend(
-  legplot 
-)
+patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, heights=c(1, 1, 1, 0.3) ) +
+  plot_annotation(title = 'Imputing Ranges Around Mean Values in ESDs')
 
-cowplot::plot_grid(rawplot, predplot, finalplot, legend, ncol = 1, rel_heights = c(1, 1, 1, 0.3))
+```
 
+
+```{r}
 
 ```
 
