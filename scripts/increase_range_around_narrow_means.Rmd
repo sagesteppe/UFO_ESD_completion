@@ -111,30 +111,36 @@ rm(r3up, r3down)
 ```
 
 
-Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These XX values were removed from the initial data set. The remaining XX observations were used as **training** data for the linear models. Once the linear model was *fitted*, the removed data points had estimates of their values recorded. 
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These XX values were removed from the initial data set. The remaining XX observations were used as **training** data for the linear model: $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). Once the linear model was *fit*, the removed data points had estimates of their values recorded. 
 
-   Mean        Range
----------    ----------
-  < 10          < 3
-10 -  20        < 4
-20 -  30        < 5
-30 -  50        < 6
+   Mean        Range       Percent*
+---------    ----------   ----------
+  < 10          < 3         30.0 %
+10 - 20         < 4         26.7 %
+20 - 30         < 5         20.0 %
+30 - 50         < 6         15.0 %
+
+* This calculated as the *range* divided by the midpoint of the *mean* multipled by 100 to gather a percentile, $\frac{max(Range)} {\text{lower Mean + upper Mean)}} * 100$ 
 
 
-$\text{Range} \sim  \text{Mean + Functional Group}$
+We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of it decreases. 
+
+The model, found that functional type has a very strong effect on the slope of the trend line `r` , and there was strong evidence that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates decreased by `r round(model$coefficients[['MEAN']], 3)` percent. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
 model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges)
-# anova(model)
-# model
-# summary(model)
+anova(model)
+summary(model)
+
+
+broom::glance(model)
+
+round(model$coefficients[['MEAN']], 3)
 
 # par(mfrow=c(2,2))
 # plot(model)
 
-
-# direction looks wrong on these ... 
 
 prediction <- predict(model, newdata = predict_data, interval = 'prediction', level = 0.8)
 prediction <- cbind(predict_data, prediction)
@@ -146,7 +152,7 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
   stat_smooth(method = "lm", show.legend = NULL)+
   geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
   xlim(0,50) + ylim(0,30) +
-  labs(x = NULL, y = NULL, subtitle  = 'Linear Model Predictions', title = NULL) +
+  labs(x = NULL, y = NULL, subtitle  = 'Predictions from Linear Models', title = NULL) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   
   theme(axis.title.x=element_blank(),
@@ -166,14 +172,13 @@ final_values <- prediction %>%
   select(ECO.SITE:COVER) %>% 
   bind_rows(., keep_ranges)
 
-
 finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter() +
   theme_bw() +
-  labs(x = NULL, y = NULL, title = NULL, subtitle  = 'Final') +
+  labs(x = NULL, y = NULL, title = NULL, subtitle  = 'Final Data') +
   xlim(0,50) + ylim(0,30) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   theme(legend.position = "none",
@@ -191,19 +196,21 @@ legend <-
   
 )
 
+# rm(lifeform_pal, predict_data, prediction)
 ```
 
 
 ```{r}
 
-patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, heights=c(1, 1, 1, 0.3) ) +
+patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
+                      heights=c(1, 1, 1, 0.3)) +
   plot_annotation(title = 'Imputing Ranges Around Mean Values in ESDs')
 
 ```
 
 
 ```{r}
-
+rm(rawplot, predplot, finalplot, legend)
 ```
 
 
