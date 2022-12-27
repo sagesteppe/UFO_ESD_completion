@@ -71,13 +71,15 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
   geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
   
   theme_bw() +
-  labs(x = NULL, y = "", title = NULL, subtitle = 'Original Data') + 
-  xlim(0,50) + ylim(0,35) +
+  labs(x = "", y = "", title = NULL, subtitle = 'Original Data') + 
+  xlim(0,55) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
+  scale_x_continuous(breaks = seq(from = 0, to = 55, by = 5 )) + 
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         legend.position = "none",
+        panel.grid.minor.x = element_blank(),
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
@@ -87,14 +89,14 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
 ```{r Plot Initial variation}
 
 keep_ranges <- bm %>%  # Let us try and filter by group where a member meets these conditions.
-  filter(RANGE > 3 & MEAN < 10 | RANGE > 4 & MEAN %in% 10:20 |
-           RANGE > 5 & MEAN %in% 21:30 | RANGE > 6 & MEAN %in% 31:50 | RANGE > 7.5 & MEAN > 51) %>%  
+  filter(RANGE > 3 & MEAN < 10 | RANGE > 4 & between(MEAN, 10, 20) |
+           RANGE > 5 & between(MEAN, 21, 30) | RANGE > 6 & between(MEAN, 31, 50) | RANGE > 7.5 & MEAN > 51) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
   select(-ESTIMATE)
 
 predict_data <- bm %>%  
-    filter(RANGE <= 3 & MEAN < 10 | RANGE <= 4 & MEAN %in% 10:20 |
-           RANGE <= 5 & MEAN %in% 21:30 | RANGE <= 6 & MEAN %in% 31:50 | RANGE <= 7.5 & MEAN > 51) %>%  
+    filter(RANGE <= 3 & MEAN < 10 | RANGE <= 4 & between(MEAN, 10, 20) |
+           RANGE <= 5 & between(MEAN, 21, 30) | RANGE <= 6 & between(MEAN, 31, 50) | RANGE <= 7.5 & MEAN > 51) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
   select(-ESTIMATE)
 
@@ -107,10 +109,10 @@ Ranges of estimated benchmark variation were estimated as being too low if they 
    Mean        Range       Percent*
 ---------    ----------   ----------
  1 -  10         < 3         30.0 %
-10 -  20         < 4         26.7 %
-20 -  30         < 5         20.0 %
-30 -  50         < 6         15.0 %
-50 - 100         < 7.5       10.0 %
+11 -  20         < 4         26.7 %
+21 -  30         < 5         20.0 %
+31 -  50         < 6         15.0 %
+55 - 100         < 7.5       10.0 %
 
 * This calculated as the *range* divided by the midpoint of the *mean* multipled by 100 to gather a percentile, $\frac{max(Range)} {\text{lower Mean + upper Mean)}} * 100$ 
 
@@ -124,8 +126,8 @@ colnames(anovaTABLE)[5] <- 'p'
 
 broomSUM <- broom::glance(model)
 
-# par(mfrow=c(2,2))
-# plot(model)
+#par(mfrow=c(2,2))
+#plot(model)
 
 prediction <- predict(model, newdata = predict_data, interval = 'prediction', level = 0.8)
 prediction <- cbind(predict_data, prediction)
@@ -136,14 +138,15 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
   theme_bw() +
   stat_smooth(method = "lm", show.legend = NULL)+
   geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
-  xlim(0,50) + ylim(0,30) +
-  labs(x = NULL, y = 'Range', subtitle  = 'Predictions from Linear Models', title = NULL) +
+  xlim(0,55) + ylim(0,35) +
+  labs(x = "", y = 'Range', subtitle  = 'Predictions from Linear Models', title = NULL) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
-  
+  scale_x_continuous(breaks = seq(from = 0, to = 55, by = 5 )) + 
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(), 
         legend.position = "none",
+        panel.grid.minor.x = element_blank(),
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8))
 
@@ -175,12 +178,13 @@ finalplot <- final_values %>%  #  something like this should convey the idea of 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter(width = 0.1)  +
   theme_bw() +
-  labs(x = 'Mean Cover', y = "", title = NULL, subtitle  = 'Final Data with Imputed Values') +
-  xlim(0,50) + ylim(0,35) +
+  labs(x = 'Mean Cover', y = "", title = NULL, subtitle  = 'Final Data') +
+  xlim(0,55) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
-  scale_x_continuous(breaks = seq(from = 0, to = 50, by = 5 )) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 55, by = 5 )) + 
   theme(legend.position = "none",
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
+        panel.grid.minor.x = element_blank(),
         plot.subtitle = element_text(hjust = 0.01, vjust = -8)) 
 
 legend <- cowplot::get_legend(
@@ -192,11 +196,11 @@ legend <- cowplot::get_legend(
         legend.key = element_rect(fill = "white"))
 )
 
-rm(lifeform_pal, predict_data, prediction, broomSUM, anovaTABLE, keep_ranges, model)
+rm(lifeform_pal, prediction, broomSUM, anovaTABLE, keep_ranges, model)
 ```
 
 
-```{r Plot Final Values, fig.cap = 'Imputing the values for '}
+```{r Plot Final Values, fig.cap = 'Imputing the values for ', out.width="85%"}
 
 patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
                       heights=c(1, 1, 1, 0.3)) +
@@ -208,15 +212,24 @@ patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1,
 rm(rawplot, predplot, finalplot, legend)
 ```
 
-```{r}
+```{r Display per ESD functional cover estimates, fig.cap = 'Initial and Calculated ESD Ranges', out.width="85%"}
+
 final_values %>% 
+  group_by(ECO.SITE) %>% 
+  mutate(ORDER = sum(MEAN)/2,
+         Estimate = str_to_sentence(ESTIMATE)) %>%
+  arrange(-ORDER) %>% 
   ggplot() +
-  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
+  geom_point(aes(x = COVER, y = fct_reorder(ECO.SITE, ORDER), color = Estimate)) +
   facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
   theme_bw() + 
-  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid.major.y =  element_blank(),
+        legend.position = 'bottom') +
   labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
-       y = NULL, x = NULL)
+       y = NULL, x = NULL) +
+  scale_color_manual(values = c('Lower' = '#A6BB8D', 'Upper' = '#3C6255'))
+  
 ```
 
 
