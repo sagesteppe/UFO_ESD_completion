@@ -13,9 +13,11 @@ bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
-The quantitative benchmarks of ESDs are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances (CITE). They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the relevant MLRA. Some of the quantitative benchmarks, of the fractional cover of functional vegetation groups, for Ecological Sites which we collected from ESD's were very narrow. In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the vegetation benchmarks while generating the cover estimates. This may be due to them only collecting quantitative vegetation data at a single site, and not across multiple time points, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
+The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances (CITE). They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the MLRA for which it has been drafted or adapted. Some of the quantitative benchmarks, of the fractional cover of functional vegetation groups, for Ecological Sites which we collected from ESD's were very narrow (Figure 1, top panel). In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the vegetation benchmarks while generating the cover estimates. This may be due to them only collecting quantitative vegetation data at a single point in time within the Ecological Site, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
 
-Well that approach is prudent, it is not prudent for us to assume such narrow ranges of variation. These may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. Here we seek to identify and broaden these estimates, we will use a simple method of *imputing* values in the context of *feature engineering*. A *linear model* will be fit to the benchmark values, which contain realistic ranges, and then the slope of this model will be used to fill in the missing values.  
+While the approach descried above is prudent in the development of an ESD, it is not prudent for us to assume such narrow ranges of variation. These narrow ranges may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. 
+
+For example, if we seek to determine if plots within an ESD are meeting a standard - such as having from 20 - 30% grass cover, than given the time frame under which we sampled, plots with 20% grass cover have meet this condition. However, if this range of grass cover was reported as 24-26% than, a plot within the noted ranges of variation may not meet the standards. Here we seek to identify and broaden these estimates, we will use a simple method of *imputing* values in the context of *feature engineering*. A *linear model* will be fit to the benchmark values, which contain realistic ranges, and then the slope of this model will be used to fill in the missing values.  
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F)
@@ -37,7 +39,7 @@ library(tidyverse)
 ppro <- '../data/processed'
 f <- list.files(ppro, pattern = 'csv')
 
-benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative', f)])) %>% 
+benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative.*Cover.csv', f)])) %>% 
   filter(ECO.SITE != 'R042BB036NM') %>% 
   mutate(COVER_TYPE = str_to_sentence(COVER_TYPE))
 
@@ -58,18 +60,9 @@ bm <- benchmarks %>%
 rawplot <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
+  
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter(width = 0.1) +
-  
-  geom_segment(aes(x =  0, y = 3, xend = 10, yend = 3), colour = "Black", lty = 2) +
-  geom_segment(aes(x = 10, y = 4, xend = 20, yend = 4), colour = "Black", lty = 2) +
-  geom_segment(aes(x = 20, y = 5, xend = 30, yend = 5), colour = "Black", lty = 2) +
-  geom_segment(aes(x = 30, y = 6, xend = 50, yend = 6), colour = "Black", lty = 2) +
-
-  geom_segment(aes(x = 10, y = 3, xend = 10, yend = 4), colour = "Black", lty = 2) +
-  geom_segment(aes(x = 20, y = 4, xend = 20, yend = 5), colour = "Black", lty = 2) +
-  geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) +
-  
   theme_bw() +
   labs(x = "", y = "", title = NULL, subtitle = 'Original Data') + 
   xlim(0,55) + ylim(0,35) +
@@ -81,7 +74,16 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
         legend.position = "none",
         panel.grid.minor.x = element_blank(),
         plot.margin = unit(c(-0.5, 0.3, 0, 0.3), "cm"),
-        plot.subtitle = element_text(hjust = 0.01, vjust = -8))
+        plot.subtitle = element_text(hjust = 0.01, vjust = -8)) + 
+  
+  geom_segment(aes(x =  1, y = 3, xend = 10, yend = 3), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 10, y = 4, xend = 20, yend = 4), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 20, y = 5, xend = 30, yend = 5), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 30, y = 6, xend = 50, yend = 6), colour = "Black", lty = 2) +
+
+  geom_segment(aes(x = 10, y = 3, xend = 10, yend = 4), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 20, y = 4, xend = 20, yend = 5), colour = "Black", lty = 2) +
+  geom_segment(aes(x = 30, y = 5, xend = 30, yend = 6), colour = "Black", lty = 2) 
 
 # rm(benchmarks)
 ```
@@ -92,6 +94,7 @@ keep_ranges <- bm %>%  # Let us try and filter by group where a member meets the
   filter(RANGE > 3 & MEAN < 10 | RANGE > 4 & between(MEAN, 10, 20) |
            RANGE > 5 & between(MEAN, 21, 30) | RANGE > 6 & between(MEAN, 31, 50) | RANGE > 7.5 & MEAN > 51) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
+  mutate(COVER_RANGE = 'ORIGINAL') %>% 
   select(-ESTIMATE)
 
 predict_data <- bm %>%  
@@ -104,19 +107,18 @@ rm(bm)
 ```
 
 
-Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). 
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
 
-   Mean        Range       Percent*
----------    ----------   ----------
- 1 -  10         < 3         30.0 %
-11 -  20         < 4         26.7 %
-21 -  30         < 5         20.0 %
-31 -  50         < 6         15.0 %
-55 - 100         < 7.5       10.0 %
+|   Mean   |  Range    |  Variation* |
+|---------:|:----------|:-----------:|
+|  1 -  10 |     < 3   |    30.0 %   |
+| 11 -  20 |     < 4   |    26.7 %   |
+| 21 -  30 |     < 5   |    20.0 %   |
+| 31 -  50 |     < 6   |    15.0 %   |
+| 51 - 100 |    < 7.5  |    10.0 %   |
 
-* This calculated as the *range* divided by the midpoint of the *mean* multipled by 100 to gather a percentile, $\frac{max(Range)} {\text{lower Mean + upper Mean)}} * 100$ 
+\* calculated as the *range* divided by the midpoint of the *mean* multiplied by 100 to gather a percentile, $\frac{max(Range)} {\text{midpoint( Mean)}} * 100$ 
 
-We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
@@ -154,16 +156,15 @@ rm(predict_data)
 ```
 
 
-This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the *response variables...*. It found that functional type has a moderate effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was slight evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
-
-Once the linear model was *fit*, the removed data points had estimates of their values recorded. 
+This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the range of cover estimates. Based on these data it found moderate evidence that functional type has a effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was moderate evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
 
 ```{r Add predicted ranges to dataset}
 
 # Round prediction to whole number
 final_values <- prediction %>% 
-  mutate(RANGE = round(fit, 0)) %>% 
-  select(ECO.SITE:COVER) %>% 
+  mutate(RANGE = round(fit, 0),
+         COVER_RANGE = 'MODELLED') %>% 
+  select(ECO.SITE:COVER, COVER_RANGE) %>% 
   bind_rows(., keep_ranges)  %>% 
   group_by(ECO.SITE, COVER_TYPE) %>%  
   slice(rep(1:n(), each = 2))  %>%   
@@ -172,9 +173,10 @@ final_values <- prediction %>%
     COVER = if_else(ESTIMATE == 'LOWER', MEAN - (RANGE/2), MEAN + (RANGE/2)),
     COVER = if_else(MEAN == 0, 0, COVER)) 
 
-finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
+finalplot <- final_values %>%  
   filter(MEAN >= 1) %>% 
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T)  %>% 
+  
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter(width = 0.1)  +
   theme_bw() +
@@ -200,7 +202,7 @@ rm(lifeform_pal, prediction, broomSUM, anovaTABLE, keep_ranges, model)
 ```
 
 
-```{r Plot Final Values, fig.cap = 'Imputing the values for ', out.width="85%"}
+```{r Plot Final Values, fig.cap = 'The process of imputing values to the benchmarks. The original data (top), contained many values without sufficient variability to capture the variation in an ES (beneath black dotted line). The predictions (middle) from linear models using the mean and functional types as predictors, the shaded areas representing an 80 percent prediction interval. The results (bottom) show the new estimates of the points from under the line in top, with the predictions from middle, with the data which was not altered.', out.width="85%"}
 
 patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
                       heights=c(1, 1, 1, 0.3)) +
@@ -208,8 +210,10 @@ patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1,
 
 ```
 
+Once the linear model was *fit*, the removed data points had both the Mean, or midpoint of their cover estimates, and functional types used together to predict what the Range of cover estimates would be for an ESD (Figure 1 middle panel). These estimates were then combined with the original data which meet the desired range of cover information to provide an altered quantitative benchmark dataset (figure 1 bottom panel & figure 2.
+
 ```{r remove the plots}
-rm(rawplot, predplot, finalplot, legend)
+rm(rawplot, predplot, finalplot, legend, benchmarks)
 ```
 
 ```{r Display per ESD functional cover estimates, fig.cap = 'Initial and Calculated ESD Ranges', out.width="85%"}
@@ -225,17 +229,20 @@ final_values %>%
   theme_bw() + 
   theme(plot.title = element_text(hjust = 0.5),
         panel.grid.major.y =  element_blank(),
+        axis.text.y = element_text(color = "grey20", size = 8),  
         legend.position = 'bottom') +
   labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
        y = NULL, x = NULL) +
-  scale_color_manual(values = c('Lower' = '#A6BB8D', 'Upper' = '#3C6255'))
+  scale_color_manual('Estimate:', values = c('Lower' = '#A6BB8D', 'Upper' = '#3C6255'))
   
 ```
 
 
-```{r ensure all input data is here and write out the results to csv}
+```{r write out the results to csv, eval = F}
 
-# remember gotta make the lower and uppers have the new values !!!!!!!!!!!!!!
+write.csv(final_values,
+          '../data/processed/ESD_Quantitative_Benchmarks_Vegetation_Cover_Imputed.csv') 
+
 ```
 
 
