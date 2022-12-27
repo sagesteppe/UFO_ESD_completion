@@ -86,19 +86,17 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
 
 ```{r Plot Initial variation}
 
-r3up <- bm %>%  #  something like this should convey the idea of the lower left quad being off... 
-  filter(RANGE > 3, MEAN < 20) %>%  #
-  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
-keep_ranges <- bm %>% 
-  filter(MEAN > 20, RANGE > 5) %>% 
-  bind_rows(r3up)
+keep_ranges <- bm %>%  # Let us try and filter by group where a member meets these conditions.
+  filter(RANGE > 3 & MEAN < 10 | RANGE > 4 & MEAN %in% 10:20 |
+           RANGE > 5 & MEAN %in% 20:30 | RANGE > 6 & MEAN %in% 30:50 | RANGE > 7.5 & MEAN > 50) %>%  
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
+  select(-ESTIMATE)
 
-r3down <- bm %>%  
-  filter(RANGE <= 3, MEAN < 20) %>%  
-  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) 
-predict_data <- bm %>% 
-  filter(MEAN >= 20, RANGE <= 5) %>% 
-  bind_rows(r3down)
+predict_data <- bm %>%  
+    filter(RANGE <= 3 & MEAN < 10 | RANGE <= 4 & MEAN %in% 10:20 |
+           RANGE <= 5 & MEAN %in% 20:30 | RANGE <= 6 & MEAN %in% 30:50 | RANGE <= 7.5 & MEAN > 50) %>%  
+  distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
+  select(-ESTIMATE)
 
 # bm %>% 
 #  ggplot() +
@@ -118,10 +116,11 @@ Ranges of estimated benchmark variation were estimated as being too low if they 
 
    Mean        Range       Percent*
 ---------    ----------   ----------
-  < 10          < 3         30.0 %
-10 - 20         < 4         26.7 %
-20 - 30         < 5         20.0 %
-30 - 50         < 6         15.0 %
+ 1 -  10         < 3         30.0 %
+10 -  20         < 4         26.7 %
+20 -  30         < 5         20.0 %
+30 -  50         < 6         15.0 %
+50 - 100         < 7.5       10.0 %
 
 * This calculated as the *range* divided by the midpoint of the *mean* multipled by 100 to gather a percentile, $\frac{max(Range)} {\text{lower Mean + upper Mean)}} * 100$ 
 
@@ -170,8 +169,11 @@ Once the linear model was *fit*, the removed data points had estimates of their 
 
 # Round prediction to whole number
 final_values <- prediction %>% 
+  group_by(ECO.SITE, COVER_TYPE) %>%  # do it do it do it
   mutate(RANGE = round(fit, 0)) %>% 
-  select(ECO.SITE:COVER) %>% # need to make same format for lower an dupper 
+  mutate(COVER = if_else(ESTIMATE == 'LOWER', MEAN - (RANGE/2), MEAN + (RANGE/2)))
+  
+  select(ECO.SITE:COVER) %>% # need to make same format for lower and upper 
   bind_rows(., keep_ranges)
 
 finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
@@ -180,7 +182,7 @@ finalplot <- final_values %>%  #  something like this should convey the idea of 
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter(width = 0.1)  +
   theme_bw() +
-  labs(x = NULL, y = "", title = NULL, subtitle  = 'Final Data with Imputed Values') +
+  labs(x = 'Mean Cover', y = "", title = NULL, subtitle  = 'Final Data with Imputed Values') +
   xlim(0,50) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   scale_x_continuous(breaks = seq(from = 0, to = 50, by = 5 )) + 
