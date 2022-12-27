@@ -107,7 +107,6 @@ predict_data <- bm %>%
 #  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
 #       y = NULL, x = NULL)
 
-
 rm(r3up, r3down, bm)
 ```
 
@@ -161,7 +160,7 @@ rm(predict_data)
 ```
 
 
-This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the *response variables...*. It found that functional type has a very strong effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was strong evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates decreased by `r round(model$coefficients[['MEAN']], 3)` percent. 
+This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the *response variables...*. It found that functional type has a moderate effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was slight evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
 
 Once the linear model was *fit*, the removed data points had estimates of their values recorded. 
 
@@ -169,12 +168,15 @@ Once the linear model was *fit*, the removed data points had estimates of their 
 
 # Round prediction to whole number
 final_values <- prediction %>% 
-  group_by(ECO.SITE, COVER_TYPE) %>%  # do it do it do it
   mutate(RANGE = round(fit, 0)) %>% 
-  mutate(COVER = if_else(ESTIMATE == 'LOWER', MEAN - (RANGE/2), MEAN + (RANGE/2)))
-  
-  select(ECO.SITE:COVER) %>% # need to make same format for lower and upper 
-  bind_rows(., keep_ranges)
+  select(ECO.SITE:COVER) %>% 
+  bind_rows(., keep_ranges)  %>% 
+  group_by(ECO.SITE, COVER_TYPE) %>%  
+  slice(rep(1:n(), each = 2))  %>%   
+  mutate(
+    ESTIMATE = c('LOWER', 'UPPER'),
+    COVER = if_else(ESTIMATE == 'LOWER', MEAN - (RANGE/2), MEAN + (RANGE/2)),
+    COVER = if_else(MEAN == 0, 0, COVER)) 
 
 finalplot <- final_values %>%  #  something like this should convey the idea of the lower left quad being off... 
   filter(MEAN >= 1) %>% 
@@ -214,6 +216,18 @@ patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1,
 ```{r remove the plots}
 rm(rawplot, predplot, finalplot, legend)
 ```
+
+```{r}
+bm %>% 
+  ggplot() +
+  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
+  facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
+  theme_bw() + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
+       y = NULL, x = NULL)
+```
+
 
 ```{r ensure all input data is here and write out the results to csv}
 
