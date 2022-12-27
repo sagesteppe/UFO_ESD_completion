@@ -88,26 +88,17 @@ rawplot <- bm %>%  #  something like this should convey the idea of the lower le
 
 keep_ranges <- bm %>%  # Let us try and filter by group where a member meets these conditions.
   filter(RANGE > 3 & MEAN < 10 | RANGE > 4 & MEAN %in% 10:20 |
-           RANGE > 5 & MEAN %in% 20:30 | RANGE > 6 & MEAN %in% 30:50 | RANGE > 7.5 & MEAN > 50) %>%  
+           RANGE > 5 & MEAN %in% 21:30 | RANGE > 6 & MEAN %in% 31:50 | RANGE > 7.5 & MEAN > 51) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
   select(-ESTIMATE)
 
 predict_data <- bm %>%  
     filter(RANGE <= 3 & MEAN < 10 | RANGE <= 4 & MEAN %in% 10:20 |
-           RANGE <= 5 & MEAN %in% 20:30 | RANGE <= 6 & MEAN %in% 30:50 | RANGE <= 7.5 & MEAN > 50) %>%  
+           RANGE <= 5 & MEAN %in% 21:30 | RANGE <= 6 & MEAN %in% 31:50 | RANGE <= 7.5 & MEAN > 51) %>%  
   distinct(ECO.SITE, COVER_TYPE, .keep_all = T) %>% 
   select(-ESTIMATE)
 
-# bm %>% 
-#  ggplot() +
-#  geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
-#  facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
-#  theme_bw() + 
-#  theme(plot.title = element_text(hjust = 0.5)) +
-#  labs(title = 'Estimates of Ranges of Quantitative Benchmarks',
-#       y = NULL, x = NULL)
-
-rm(r3up, r3down, bm)
+rm(bm)
 ```
 
 
@@ -218,7 +209,7 @@ rm(rawplot, predplot, finalplot, legend)
 ```
 
 ```{r}
-bm %>% 
+final_values %>% 
   ggplot() +
   geom_point(aes(x = COVER, y = ECO.SITE, color = ESTIMATE)) +
   facet_wrap( ~ COVER_TYPE, nrow = 1, scales = 'free_x') +
