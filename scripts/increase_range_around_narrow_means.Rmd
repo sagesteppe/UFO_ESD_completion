@@ -238,11 +238,12 @@ final_values %>%
 ```
 
 
+
 ```{r write out the results to csv, eval = F}
 
 write.csv(final_values,
           '../data/processed/ESD_Quantitative_Benchmarks_Vegetation_Cover_Imputed.csv') 
-
+rm(final_values)
 ```
 
 

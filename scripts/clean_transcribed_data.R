@@ -1,3 +1,4 @@
+library(tidyverse)
 library(sf)
 
 setwd('/media/sagesteppe/ExternalHD/UFO_ESD_completion/scripts')
@@ -164,7 +165,8 @@ comm_table <- comm_table %>%
          SYMBOL =  str_replace(SYMBOL, '2SHRUB', 'SH'),
          ) 
 
-
+comm_table <- comm_table %>% # much much reproduced effort
+  distinct(ECO.SITE, PHASE, SYMBOL, .keep_all = T)
 
 write.csv(comm_table, file.path(p, 'processed', f[grep('Production', f)]), row.names = F )
 rm(comm_table, trouble, USDA_pls_codes)
