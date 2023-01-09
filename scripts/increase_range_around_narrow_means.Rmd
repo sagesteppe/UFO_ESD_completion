@@ -125,7 +125,6 @@ Ranges of estimated benchmark variation were estimated as being too low if they 
 model <- lm(RANGE ~ MEAN + COVER_TYPE, data = keep_ranges)
 anovaTABLE <- anova(model)
 colnames(anovaTABLE)[5] <- 'p'
-
 broomSUM <- broom::glance(model)
 
 #par(mfrow=c(2,2))
@@ -155,8 +154,7 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
 rm(predict_data)
 ```
 
-
-This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the range of cover estimates. Based on these data it found moderate evidence that functional type has a effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was moderate evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
+This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the range of cover estimates. Based on these data it found moderate evidence that functional type has a effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was slight evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. However, this effect was much weaker than the additive co-variate of functional type; and the final results nearly exclude the term. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
 
 ```{r Add predicted ranges to dataset}
 
