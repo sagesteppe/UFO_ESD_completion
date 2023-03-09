@@ -7,6 +7,7 @@ output:
   word_document: default
 header-includes:
  - \usepackage[width=\textwidth]{caption}
+ - \usepackage{wrapfig}
 always_allow_html: yes
 csl: ../citations/citations/apa.csl
 bibliography: ../citations/citations/citations.bib
@@ -37,7 +38,6 @@ An important attribute of an Ecological Site Description (ESD) are *benchmarks*,
 Here we summarize the status of knowledge for ESD's across the UFO field office. As our management objectives rely on these values to determine whether our land is within the range of natural variability, they are an essential component of this.
 
 
-
 ```{r load libraries}
 library(tidyverse)
 library(PantaRhei)
@@ -55,7 +55,7 @@ transcription <- read.csv(file.path(pp, f[grep('Transcription', f)])) %>%
   mutate(across(.cols = 2:4,  ~ if_else(.x == 'DONE', 1, 0)))
 
 tracking <- read.csv(file.path(pp, f[grep('Tracking', f)]))
-benchmarks <- read.csv(file.path(pp, f[grep('Quantitative', f)]))
+benchmarks <- read.csv(file.path(pp, f[grep('*.REF', f)]))
 production <- read.csv(file.path(pp, f[grep('Production', f)]))
 stateTransition <- read.csv(file.path(pp, f[grep('Ordered', f )]))
 
@@ -71,8 +71,7 @@ rm(pp, f)
 3) does a state and transition model exist
 4) does vegetation community production table exist. 
  a. which states
-5) do quantitative benchmarks exist?
-
+5) do quantitative plant cover benchmarks exist?
 
 ```{r collect quant values for writeup, echo = F}
 tracking_vals <- tracking %>% 
@@ -111,17 +110,17 @@ plots_sampled <- tracking %>% nrow()
 ```
 
 
-```{r Plots per ESD}
+```{r Plots per ESD, eval = F}
 
 esUFO %>% 
   left_join(., benchmarks, by = 'ECO.SITE') %>% 
   mutate(QUANTITATIVE.BENCHMARKS = replace_na(QUANTITATIVE.BENCHMARKS, 0),
-         QUANTITATIVE.BENCHMARKS = if_else(str_detect(QUANTITATIVE.BENCHMARKS, '1'), 'PRESENT', 'ABSENT')) %>% 
+         QUANTITATIVE.BENCHMARKS = if_else(str_detect(QUANTITATIVE.BENCHMARKS, '1'), 'Present', 'Absent')) %>% 
   
   ggplot() +
   geom_point(aes(x = fct_rev(fct_reorder(ECO.SITE, n)), y = n, color = QUANTITATIVE.BENCHMARKS),  size = 4) +
-  scale_colour_manual('Benchmarks', values = c('PRESENT' = 'grey75', 'ABSENT' = 'black' )) +
-  labs(x = NULL, y = 'Number of Plots', title = 'Number of AIM plots per Ecological Site') +
+  scale_colour_manual('Vegetation\nBenchmarks', values = c('Present' = 'grey75', 'Absent' = 'black' )) +
+  labs(x = NULL, y = 'Number of Plots', title = 'AIM plots per Ecological Site') +
   theme_classic() +
   scale_y_continuous(breaks=c(0,5,10, 20, 30)) + 
   theme(
@@ -129,10 +128,19 @@ esUFO %>%
     axis.ticks.x=element_blank(),
     axis.line.y.left = element_blank(),
     axis.line.x.bottom = element_blank(),
-    plot.title = element_text(hjust = 0.5)
+    plot.title = element_text(hjust = 0.5),
+    legend.title = element_text(hjust = 0.5),
+    legend.position = c(0.85, 0.75)
     ) 
+
+ggsave('../results/graphics/PlotsPerESD.png')
 ```
 
+\begin{wrapfigure}{r}{0.4\textwidth}
+  \centering
+    \includegraphics[width=0.4\textwidth]{../results/graphics/PlotsPerESD.png}
+  \caption{The number of AIM plots correlated to each Ecological Site, and whether each site has a written Description}
+\end{wrapfigure}
 
 The `r toString(nrow(tracking[tracking$STATUS == 'SAMPLED',]))` plots sampled by the AIM crew, of which `r nrow(tracking[tracking$STATUS == 'SAMPLED' & tracking$ECO.SITE.MATCHED == T,])`  were mapped to an ESD, resulted in the verification of `r toString(no.ES)` in the UFO field office. However, while we can only make inference on the `r toString(bp_sampled)` base plots which were successfully sampled and verified to `r toString(nrow(esUFO))` Ecological Sites, we see that these plots had a similar success in detecting the number of different ES across the field office.
 
@@ -194,6 +202,8 @@ quantity <- c(
   bottom[3], top[5], loss[5], bottom[4]
 )
 
+# quantity <- replace(quantity, quantity < 0,0) don't do this... 
+
 df = data.frame(from, to, quantity)
 
 nodes <- data.frame(
@@ -206,11 +216,42 @@ nodes <- data.frame(
 
 colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
-sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots which have Quantitative Benchmarks")
+sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots with quantitative benchmarks")
 
 rm(colors, ns, nodes, top, bottom, quantity, evenLETTERS, oddLETTERS, df, i, loss, op, to, from, base_plots)
 ```
 
+```{r Sankey version two}
+
+nodes <- data.frame(
+  ID = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
+          'Similar', '', 'Benchmarks', 'N.Benchmarks'),
+  label = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
+          'Similar', '', 'Benchmarks', 'Benchmarks'),
+  x = c(1, rep(2:6, each = 2)), y = c(2, rep(c(2,1), times = 5)),
+  label_pos = c('above', rep(c('above', 'below'), times = 5))
+)
+
+df <- data.frame(
+  from = c('BP', 'OS', 'OS', 'ES', 'ES', 
+           'N.ES', 'ESD', 'ESD', 'ESD', 'N.ESD',
+           'SIMILAR', 'N.SIMILAR'),
+  to = c('OS', 'ES', 'N.ES', 'ESD', 'N.ESD',
+         'N.ESD', 'SIMILAR', 'N.SIMILAR', 'N.SIMILAR', 
+         'BM', 'N.BM', 'N.BM'), 
+  quantity = c(281, 237, 44, 190, 47,
+               44, 180, 100, 91, 82,
+               99, 101
+               )
+)
+
+colors <- data.frame(substance = "<any>", color = "#008083")
+ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
+sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots with quantitative benchmarks")
+
+
+
+```
 
 
 ```{r}
