@@ -14,6 +14,8 @@ bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
+\vspace{-1cm}
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F)
 knitr::opts_chunk$set(dpi = 300) 
@@ -33,7 +35,6 @@ An important attribute of an Ecological Site Description (ESD) are *benchmarks*,
 > "In other words, the ecological site determines what is possible, the current state determines what is realistic, and the phase within a state conveys the current conditions and likelihood of future transitions."
 >  
 > `r tufte::quote_footer('--- Karl & Herrick 2010')`
-
 
 Here we summarize the status of knowledge for ESD's across the UFO field office. As our management objectives rely on these values to determine whether our land is within the range of natural variability, they are an essential component of this.
 
@@ -65,13 +66,6 @@ benchmarks <- benchmarks %>%
 
 rm(pp, f)
 ```
-
-1) How many ES mapped to in UFO?
-2) does the esd exist
-3) does a state and transition model exist
-4) does vegetation community production table exist. 
- a. which states
-5) do quantitative plant cover benchmarks exist?
 
 ```{r collect quant values for writeup, echo = F}
 tracking_vals <- tracking %>% 
@@ -142,7 +136,7 @@ ggsave('../results/graphics/PlotsPerESD.png')
   \caption{The number of AIM plots correlated to each Ecological Site, and whether each site has a written Description}
 \end{wrapfigure}
 
-The `r toString(nrow(tracking[tracking$STATUS == 'SAMPLED',]))` plots sampled by the AIM crew, of which `r nrow(tracking[tracking$STATUS == 'SAMPLED' & tracking$ECO.SITE.MATCHED == T,])`  were mapped to an ESD, resulted in the verification of `r toString(no.ES)` in the UFO field office. However, while we can only make inference on the `r toString(bp_sampled)` base plots which were successfully sampled and verified to `r toString(nrow(esUFO))` Ecological Sites, we see that these plots had a similar success in detecting the number of different ES across the field office.
+The `r toString(nrow(tracking[tracking$STATUS == 'SAMPLED',]))` plots sampled by the AIM crew, of which `r nrow(tracking[tracking$STATUS == 'SAMPLED' & tracking$ECO.SITE.MATCHED == T,])`  were correlated to an ecological site, this resulted in the correlation of `r toString(no.ES)` in the UFO field office. 
 
 ```{r}
 rm(no.ES, esUFO, bp_sampled)
@@ -156,105 +150,62 @@ base_plots <- tracking %>%
   filter(str_detect(PANEL, 'oversample', negate = T))
 # technically we do start with 255 plots, but we picked up on oversample !!!
 
+## tracking %>% # the number of base plots which were sampled
+##  filter(str_detect(PANEL, 'oversample', negate = T), STATUS == 'SAMPLED') %>% nrow()
+
+## tracking %>% 
+##   filter(str_detect(PANEL, 'oversample')) %>% 
+##   nrow()
+
 benchmarks <- benchmarks %>% 
   distinct(ECO.SITE) %>% 
   mutate(QUANTITATIVE.BENCHMARKS = 1)
 
-op <- tracking %>% 
-  filter(STATUS == 'SAMPLED') %>% 
-  select(-PANEL, -PLOT.ID) %>% 
-  left_join(., transcription, by = 'ECO.SITE') %>% 
-  select(-QUANTITATIVE.BENCHMARKS) %>% 
-  left_join(., benchmarks, by = 'ECO.SITE')   %>% 
-  mutate(ECO.SITE.MATCHED = replace_na(ECO.SITE.MATCHED, FALSE),
-         ECO.SITE.MATCHED = if_else(ECO.SITE.MATCHED == T, 1, 0),
-         BASE.PLOTS = 1,
-         STATUS = if_else(STATUS == 'SAMPLED', 1, 0)) %>% 
-  mutate(across(STATETRANSITION.PRODUCTION:QUANTITATIVE.BENCHMARKS, ~ replace_na(.x, 0))) %>% 
-  select(-ECO.SITE, SAMPLED = STATUS) %>% 
-  colSums()
-
-top <- sort(op, decreasing = T)
-bottom = 255 - top 
-names(bottom) <- NULL
-names(top) <- NULL
-
-loss <- vector(mode = "numeric", length = length(bottom))
-for(i in seq(loss)) {loss[i] <-  bottom[i + 1] - bottom[i] }
-loss <- loss[1:length(loss)-1]
-
-evenLETTERS <- LETTERS[1:26 %% 2 == 0]
-oddLETTERS <- LETTERS[1:26 %% 2 != 0]
-evenLETTERS <- c('A', evenLETTERS) # deal with eccentricities involving A
-evenLETTERS <- evenLETTERS[1:6]
-oddLETTERS <- oddLETTERS[2:6]
-
-from = sort(c(rep(evenLETTERS[1:length(evenLETTERS)-1], each = 2), 
-              rep(oddLETTERS[1:length(oddLETTERS)-1], each = 1)))
-to = sort( c('C', rep(oddLETTERS[2:length(oddLETTERS)], each = 2), 
-             rep(evenLETTERS[2:length(evenLETTERS)], each = 1)))
-
-top <- top[2:length(top)]
-bottom <- bottom[2:(length(bottom)-1)]
-quantity <- c(
-  top[1], bottom[1], top[2], loss[1], bottom[1], 
-  top[3], loss[3], bottom[2], top[4], loss[4], 
-  bottom[3], top[5], loss[5], bottom[4]
-)
-
-# quantity <- replace(quantity, quantity < 0,0) don't do this... 
-
-df = data.frame(from, to, quantity)
-
-nodes <- data.frame(
-  ID = LETTERS[1:11],
-  label = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
-          'Similar', '', 'Benchmarks', 'Benchmarks'),
-  x = c(1, rep(2:6, each = 2)), y = c(2, rep(c(2,1), times = 5)),
-  label_pos = c('above', rep(c('above', 'below'), times = 5))
-)
-
-colors <- data.frame(substance = "<any>", color = "#008083")
-ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
-sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots with quantitative benchmarks")
-
-rm(colors, ns, nodes, top, bottom, quantity, evenLETTERS, oddLETTERS, df, i, loss, op, to, from, base_plots)
+rm(base_plots)
 ```
 
 ```{r Sankey version two}
 
 nodes <- data.frame(
-  ID = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
-          'Similar', '', 'Benchmarks', 'N.Benchmarks'),
-  label = c('Base Plots', 'Sampled', '', 'ES', '', 'ESD',  '',
-          'Similar', '', 'Benchmarks', 'Benchmarks'),
-  x = c(1, rep(2:6, each = 2)), y = c(2, rep(c(2,1), times = 5)),
-  label_pos = c('above', rep(c('above', 'below'), times = 5))
+  ID = c(
+    'OS', 'BP', 'SAMPLED', 
+    'ECO.SITE', 'N.ECO.SITE',
+    'ESD', 'N.ESD', 
+    'SIMILAR', 'N.SIMILAR', 
+    'BM', 'N.BM'
+         ),
+  label = c(
+    'Oversample Plots', 'Base Plots', 'Sampled',
+    'Ecological Site', 'no ES', 
+    'ESD', 'no ESD', 
+    'Similar', 'no similar',
+    'Benchmarks', 'no benchmarks'),
+  x = c(1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6),
+  y = c(3, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1),
+  label_pos = c(c('above', 'below', 'above'), rep(c('above', 'below'), times = 4))
 )
 
 df <- data.frame(
-  from = c('BP', 'OS', 'OS', 'ES', 'ES', 
-           'N.ES', 'ESD', 'ESD', 'ESD', 'N.ESD',
-           'SIMILAR', 'N.SIMILAR'),
-  to = c('OS', 'ES', 'N.ES', 'ESD', 'N.ESD',
-         'N.ESD', 'SIMILAR', 'N.SIMILAR', 'N.SIMILAR', 
-         'BM', 'N.BM', 'N.BM'), 
-  quantity = c(281, 237, 44, 190, 47,
-               44, 180, 100, 91, 82,
-               99, 101
-               )
+  from = c(
+    'OS', 'BP', 'SAMPLED', 'SAMPLED',
+    'ECO.SITE', 'ECO.SITE', 'N.ECO.SITE',
+    'ESD', 'ESD', 'N.ESD',
+    'SIMILAR', 'SIMILAR', 'N.SIMILAR'),
+  to = c(
+    'SAMPLED', 'SAMPLED', 'ECO.SITE', 'N.ECO.SITE',
+    'ESD', 'N.ESD', 'N.ESD',
+    'SIMILAR', 'N.SIMILAR', 'N.SIMILAR',
+    'BM', 'N.BM', 'N.BM'), 
+  quantity = c(
+    75, 206, 237, 44, 
+    190, 47, 44,
+    180, 10, 91,
+    82, 98, 101)
 )
 
 colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
 sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots with quantitative benchmarks")
-
-
-
-```
-
-
-```{r}
 
 ```
 
