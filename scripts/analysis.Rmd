@@ -65,6 +65,7 @@ benchmarks <- benchmarks %>%
   mutate(QUANTITATIVE.BENCHMARKS = 1)
 
 rm(pp, f)
+rm(production, stateTransition)
 ```
 
 ```{r collect quant values for writeup, echo = F}
@@ -77,17 +78,31 @@ tracking_vals <- tracking %>%
 no.ES <- tracking %>% filter(STATUS == 'SAMPLED' & ECO.SITE.MATCHED == T) %>% 
   distinct(ECO.SITE) %>% nrow()
 
-bp_sampled <- tracking %>%
-  filter(#str_detect(PANEL, 'oversample', negate = T) & 
-    STATUS == 'SAMPLED') %>% 
+correlated <- tracking %>% 
+  filter(ECO.SITE.MATCHED == T) %>% 
+  nrow()
+  
+plots_w_ESD <- nrow(tracking_vals) # 155 base plots have ESDS
+
+plots_sampled <- tracking %>% # total number of plots sampled
+  filter(STATUS == 'SAMPLED') %>% 
   nrow()
 
-# how many of these ESDS are completed ?
-# tracking_vals %>% 
-#  distinct(ECO.SITE, .keep_all = T) %>% 
-#  count(STATETRANSITION.PRODUCTION) # portions of at least 23 are complete. 
+bp_sampled <- tracking %>% # the number of base plots which were sampled
+  filter(str_detect(PANEL, 'oversample', negate = T), STATUS == 'SAMPLED') %>% 
+  nrow()
 
+ov_sampled <- tracking %>% # the number of over sample plots sampled
+   filter(str_detect(PANEL, 'oversample')) %>% 
+   nrow()
+
+benchmarks <- benchmarks %>% 
+  distinct(ECO.SITE) %>% 
+  mutate(QUANTITATIVE.BENCHMARKS = 1)
+
+rm(tracking_vals, transcription, tracking)
 ```
+
 
 
 ```{r Plots per ESD, eval = F}
@@ -116,48 +131,22 @@ esUFO %>%
 ggsave('../results/graphics/PlotsPerESD.png')
 ```
 
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
   \centering
-    \includegraphics[width=0.4\textwidth]{../results/graphics/PlotsPerESD.png}
+    \includegraphics[width=0.5\textwidth]{../results/graphics/PlotsPerESD.png}
   \caption{The number of AIM plots correlated to each Ecological Site, and whether each site has a written Description}
 \end{wrapfigure}
 
 Ideally, it would be possible to correlate every single AIM plot an Ecological Site, and the description (ESD) for that site would be completed. This is unlikely due to two constraints, 1) the NRCS soil survey components can contain inclusions which are up to 15% of the area, 2) not all ESDs have been completed, and many are at varying stages of completion. While these provide limits on the information which can be gleaned from each plot for specialized management decisions, statistical procedures exist which allow for inference of overall land conditions despite this. 
 
-
-```{r fate of plots graph, echo = F}
-
-correlated <- tracking %>% 
-  filter(ECO.SITE.MATCHED == T) %>% 
-  nrow()
-  
-plots_w_ESD <- nrow(tracking_vals) # 155 base plots have ESDS
-
-plots_sampled <- tracking %>% # total number of plots sampled
-  filter(STATUS == 'SAMPLED') %>% 
-  nrow()
-
-bp_sampled <- tracking %>% # the number of base plots which were sampled
-  filter(str_detect(PANEL, 'oversample', negate = T), STATUS == 'SAMPLED') %>% 
-  nrow()
-
-ov_sampled <- tracking %>% # the number of over sample plots sampled
-   filter(str_detect(PANEL, 'oversample')) %>% 
-   nrow()
-
-benchmarks <- benchmarks %>% 
-  distinct(ECO.SITE) %>% 
-  mutate(QUANTITATIVE.BENCHMARKS = 1)
-
-```
-
 Of the `r plots_sampled` plots sampled by the AIM crew `r correlated` were correlated to an ecological site, with a total of `r toString(no.ES)` unique Ecological Sites being sampled in the first AIM sample frame. As can be seen in Figure 1, most plots are located in just a few Ecological Sites, and most Ecological Sites had only a few plots sampled in them. As the plot locations were randomly stratified, this indicates that a few Ecological Sites make up much of the the Field Office. A few of the most common Ecological Sites are missing completed Descriptions. The lack of these few descriptions disproportionately affects the number of plots with existing quantitative benchmarks. 
 
-\begin{wrapfigure}{r}{0.8\textwidth}
+\begin{wrapfigure}{r}{0.6\textwidth}
   \centering
-    \includegraphics[width=0.8\textwidth]{../results/graphics/Sankey_plots.png}
+    \includegraphics[width=0.6\textwidth]{../results/graphics/Sankey_plots.png}
   \caption{The fate of plots regarding Quantitative Benchmarks}
 \end{wrapfigure}
+
 
 Of all `r plots_sampled` plots sampled the total with the full set of quantitative benchmarks is 88. Roughly `r paste0(round((1 - correlated / plots_sampled) * 100, 0), '%')` of plots were not correlated to ESD, a proportion close to the 15% tolerance for inclusions across the map units. Of the plots which were correlated 47 were in Ecological Sites which do not yet have an Ecological Site Description which has made it to the publicly available draft stage. Of the 190 plots with ESD's, only 82 of these have quantitative benchmarks. Because of this, a variety of approaches will be used to estimate the quantitative benchmark values associated with many Ecological Sites. With the exception of the vegetation benchmarks, these will be discussed in each section.
 
@@ -172,9 +161,9 @@ nodes <- data.frame(
     'BM', 'N.BM'
          ),
   label = c(
-    'Oversample Plots', 'Base Plots', 'Sampled',
+    'Oversample', 'Base', 'Sampled',
     'Ecological Site', 'no ES', 
-    'ESD', 'no ESD', 
+    'ES Description', 'no ESD', 
     'Similar', 'no similar',
     'Benchmarks', 'no benchmarks'),
   x = c(1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6),
@@ -202,15 +191,20 @@ df <- data.frame(
 
 colors <- data.frame(substance = "<any>", color = "#008083")
 ns <- list(type="arrow", gp=gpar(fill="#FD5901", col="white", lwd=4), mag_pos = 'label', mag_fmt="%.0f")
+my_title <- "Number of plots with quantitative benchmarks"
+attr(my_title, "gp") <- gpar(fontsize=18, fontface="bold")
 
-png('../results/graphics/Sankey_plots.png')
-sankey(nodes, flows = df, node_style=ns, legend=F, colors, title = "Number of plots with quantitative benchmarks")
+png('../results/graphics/Sankey_plots.png', width = 620, height = 420)
+sankey(nodes, flows = df, node_style=ns, legend=F, colors, 
+       page_margin=c(0.0, -1.2, 0.0, -1.1), 
+       title = my_title)
 dev.off()
+
+rm(colors, ns, df, nodes)
 ```
 
-
 ```{r}
-rm(bp_sampled, correlated, ov_sampled, plots_sampled, plots_w_ESD)
+rm(bp_sampled, correlated, ov_sampled, plots_sampled, plots_w_ESD, no.ES, benchmarks)
 ```
 
 # References
