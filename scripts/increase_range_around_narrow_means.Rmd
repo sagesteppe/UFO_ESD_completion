@@ -1,21 +1,35 @@
 ---
-title: "Increase Variation Around Narrow ESD Concepts"
-author: NULL
-date: NULL
+title: "Increase range of Plant Functional Benchmarks"
 output:
   pdf_document: default
   word_document: default
 header-includes:
  - \usepackage[width=\textwidth]{caption}
+ - \usepackage{wrapfig}
 always_allow_html: yes
 csl: ../citations/citations/apa.csl
 bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
-The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances (CITE). They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the ESD in the MLRA for which it has been drafted or adapted. Some of the quantitative benchmarks, of the fractional cover of functional vegetation groups, for Ecological Sites which we collected from ESD's were very narrow (Figure 1, top panel). In many of these instances the reported values were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the vegetation benchmarks while generating the cover estimates. This may be due to them only collecting quantitative vegetation data at a single point in time within the Ecological Site, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
+\vspace{-1cm}
 
-While the approach descried above is prudent in the development of an ESD, it is not prudent for us to assume such narrow ranges of variation. These narrow ranges may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. 
+The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances. They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the Ecological Site in the MLRA for which it has been drafted or adapted. Some of the quantitative benchmarks, of the cover of plant functional groups, which we collected from ESD's were very narrow (Figure 1, top panel). In many of these instances the values reported in ESD's were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the benchmarks while generating the vegetation benchmarks. This may be due to them only collecting quantitative vegetation data at a single point in time within the Ecological Site, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
+
+\begin{wraptable}{l}{53mm}
+    \begin{tabular}{c|c|c}
+      \textbf{Mean} & \textbf{Range} & \textbf{Variation*} \\
+       1 -  10 & <   3 & 30.0$\%$ \\ \hline
+      11 -  20 & <   4 & 26.7$\%$ \\ \hline 
+      21 -  30 & <   5 & 20.0$\%$ \\ \hline
+      31 -  50 & <   6 & 15.0$\%$ \\ \hline
+      51 - 100 & < 7.5 & 10.0$\%$ \\ \hline
+    \end{tabular}
+    \caption{* calculated as the \textit{range} divided by the midpoint of the \textit{mean} multiplied by 100 to gather a percentile $\frac{max(Range)} {\text{midpoint( Mean)}} * 100$ }
+    \label{Expected Variation of Benchmarks}
+\end{wraptable}
+
+While the approach described above is prudent in the development of an ESD, it is not prudent for us to assume such narrow ranges of variation. Ranges this narrow may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. This can lead to a misleading assessment of land health conditions.
 
 For example, if we seek to determine if plots within an ESD are meeting a standard - such as having from 20 - 30% grass cover, than given the time frame under which we sampled, plots with 20% grass cover have meet this condition. However, if this range of grass cover was reported as 24-26% than, a plot within the noted ranges of variation may not meet the standards. Here we seek to identify and broaden these estimates, we will use a simple method of *imputing* values in the context of *feature engineering*. A *linear model* will be fit to the benchmark values, which contain realistic ranges, and then the slope of this model will be used to fill in the missing values.  
 
@@ -39,7 +53,7 @@ library(tidyverse)
 ppro <- '../data/processed'
 f <- list.files(ppro, pattern = 'csv')
 
-benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative.*Cover.csv', f)])) %>% 
+benchmarks <- read.csv(file.path(ppro, f[grep('Quantitative.*Cove-REF.csv', f)])) %>% 
   filter(ECO.SITE != 'R042BB036NM') %>% 
   mutate(COVER_TYPE = str_to_sentence(COVER_TYPE))
 
@@ -106,19 +120,13 @@ predict_data <- bm %>%
 rm(bm)
 ```
 
+\begin{wrapfigure}{r}{0.4\textwidth}
+  \centering
+    \includegraphics[width=0.4\textwidth]{../results/graphics/Benchmark_Ranges.png}
+  \caption{Original data (top), with values without sufficient variability beneath the black line. Predictions from linear models (middle). Results (bottom).}
+\end{wrapfigure}
 
-Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$ (r formula notation). We believed that the variation associated which each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
-
-|   Mean   |  Range    |  Variation* |
-|---------:|:----------|:-----------:|
-|  1 -  10 |     < 3   |    30.0 %   |
-| 11 -  20 |     < 4   |    26.7 %   |
-| 21 -  30 |     < 5   |    20.0 %   |
-| 31 -  50 |     < 6   |    15.0 %   |
-| 51 - 100 |    < 7.5  |    10.0 %   |
-
-\* calculated as the *range* divided by the midpoint of the *mean* multiplied by 100 to gather a percentile, $\frac{max(Range)} {\text{midpoint( Mean)}} * 100$ 
-
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$. We believed that the variation associated with each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
@@ -140,7 +148,7 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
   stat_smooth(method = "lm", show.legend = NULL)+
   geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=0.1) + 
   xlim(0,55) + ylim(0,35) +
-  labs(x = "", y = 'Range', subtitle  = 'Predictions from Linear Models', title = NULL) +
+  labs(x = "", y = 'Range (%)', subtitle  = 'Predictions from Linear Models', title = NULL) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   scale_x_continuous(breaks = seq(from = 0, to = 55, by = 5 )) + 
   theme(axis.title.x=element_blank(),
@@ -178,7 +186,7 @@ finalplot <- final_values %>%
   ggplot(aes(x = MEAN, y = RANGE, color = COVER_TYPE)) +
   geom_jitter(width = 0.1)  +
   theme_bw() +
-  labs(x = 'Mean Cover', y = "", title = NULL, subtitle  = 'Final Data') +
+  labs(x = 'Mean Cover (%)', y = "", title = NULL, subtitle  = 'Final Data') +
   xlim(0,55) + ylim(0,35) +
   scale_color_manual('Functional Group', values = lifeform_pal) +
   scale_x_continuous(breaks = seq(from = 0, to = 55, by = 5 )) + 
@@ -200,15 +208,20 @@ rm(lifeform_pal, prediction, broomSUM, anovaTABLE, keep_ranges, model)
 ```
 
 
-```{r Plot Final Values, fig.cap = 'The process of imputing values to the benchmarks. The original data (top), contained many values without sufficient variability to capture the variation in an ES (beneath black dotted line). The predictions (middle) from linear models using the mean and functional types as predictors, the shaded areas representing an 80 percent prediction interval. The results (bottom) show the new estimates of the points from under the line in top, with the predictions from middle, with the data which was not altered.', out.width="85%"}
+```{r Plot Final Values, eval = F}
 
-patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
+p <- patchwork::wrap_plots(rawplot, predplot, finalplot, legend,  ncol=1, 
                       heights=c(1, 1, 1, 0.3)) +
   patchwork::plot_annotation(title = 'Imputed Ranges Around Mean Values')
 
+ggsave('../results/graphics/Benchmark_Ranges.png', p)
+
+rm(p)
 ```
 
-Once the linear model was *fit*, the removed data points had both the Mean, or midpoint of their cover estimates, and functional types used together to predict what the Range of cover estimates would be for an ESD (Figure 1 middle panel). These estimates were then combined with the original data which meet the desired range of cover information to provide an altered quantitative benchmark dataset (figure 1 bottom panel & figure 2.
+Once the linear model was *fit*, the removed data points had both the Mean, or midpoint of their cover estimates, and functional types used together to predict what the Range of cover estimates would be for an ESD (Figure 1 middle panel). These estimates were then combined with the original data which meet the desired range of cover information to provide an altered quantitative benchmark data set (figure 1 bottom panel & figure 2.
+
+For example, for the shrub cover benchmark which had a midpoint (mean) cover of 40% (Figure 1, top panel), and a range of ~2%, had a range of 38-42%. We widened this value to roughly 27-53%, maintaining the midpoint of 40%. After performing this process for all Ecological Site Descriptions which had narrow benchmarks (those beneath the dashed line in Figure 1, top panel), we recombined all functional group benchmarks as shown in Figure 1 panel 3, and figure 2.
 
 ```{r remove the plots}
 rm(rawplot, predplot, finalplot, legend, benchmarks)

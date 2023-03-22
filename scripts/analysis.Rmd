@@ -23,7 +23,6 @@ knitr::opts_chunk$set(message = F)
 knitr::opts_chunk$set(warning = F)
 ```
 
-
 An *ecological site* is an area of land which is subject to roughly the same environmental factors, e.g. climate & soils, and which produce similar types of vegetation when both undisturbed and when subjected to the same type of disturbance, e.g. by wildfire (@butler2003national). The idea of Ecological Sites is a broad system of models each of which seeks to capture these re-occuring motifs of climate and soils across the landscape in order to guide land managers decisions at geographic levels at which they may effectively achieve desired outcomes, e.g. the level of allotment. The aggregation of areas across the *landscape* reduce the amount of monitoring and research required to make informed land management decisions, and allow for the transfer of successful practices across them to quickly correct possible downward trends in different areas. Each Ecological Site is a concept which inherently captures a range of variation across the landscape, and each site features varying degrees of dissimilarity, however given the resources available to land managers they form the most thorough and useful model for classifying lands.
 
 Ecological Sites are developed by the Natural Resource Conservation System (NRCS). While the current conception of what an Ecological Site is has theoretical roots in the science of Ecology nearly 100 years ago, the formulation of specific Ecological Sites under the current paradigm began around 1997 (@brown2010ecological, @karl2010monitoring). Their popularity was a response to the failure of 'one size fits all' management decisions which occurred commonly during the 20th century (@bestelmeyer2010introduction). The existence of Ecological Sites allow more fine tuned assessments of the possibilities which exist at each site, i.e. they can incorporate the number and identity of plant species and their annual growth and land managers can compare the current status of these attributes to the possibilities (@brown2010ecological). 
@@ -147,7 +146,6 @@ Of the `r plots_sampled` plots sampled by the AIM crew `r correlated` were corre
   \caption{The fate of plots regarding Quantitative Benchmarks}
 \end{wrapfigure}
 
-
 Of all `r plots_sampled` plots sampled the total with the full set of quantitative benchmarks is 88. Roughly `r paste0(round((1 - correlated / plots_sampled) * 100, 0), '%')` of plots were not correlated to ESD, a proportion close to the 15% tolerance for inclusions across the map units. Of the plots which were correlated 47 were in Ecological Sites which do not yet have an Ecological Site Description which has made it to the publicly available draft stage. Of the 190 plots with ESD's, only 82 of these have quantitative benchmarks. Because of this, a variety of approaches will be used to estimate the quantitative benchmark values associated with many Ecological Sites. With the exception of the vegetation benchmarks, these will be discussed in each section.
 
 ```{r Sankey version two, eval = F}
@@ -200,7 +198,7 @@ sankey(nodes, flows = df, node_style=ns, legend=F, colors,
        title = my_title)
 dev.off()
 
-rm(colors, ns, df, nodes)
+rm(colors, ns, df, nodes, my_title)
 ```
 
 ```{r}
