@@ -12,9 +12,10 @@ bibliography: ../citations/citations/citations.bib
 link-citations: yes
 ---
 
+\pagenumbering{gobble}
 \vspace{-1cm}
 
-The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to capture the variation inherent in a state and phase under multiple conditions, from consecutive drought to surpluses of moisture, and following multiple disturbances. They are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the Ecological Site in the MLRA for which it has been drafted or adapted. Some of the quantitative benchmarks, of the cover of plant functional groups, which we collected from ESD's were very narrow (Figure 1, top panel). In many of these instances the values reported in ESD's were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the benchmarks while generating the vegetation benchmarks. This may be due to them only collecting quantitative vegetation data at a single point in time within the Ecological Site, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
+The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to capture the ecological variation inherent in a state and phase under multiple conditions. These conditions range from years of consecutive drought to surpluses of moisture, and following multiple types of disturbance. The benchmarks are intended to capture the variation that would be found in this state and phase combination across the geographic and climatic extents of the Ecological Site in the MLRA for which it has been drafted or adapted. Some of the quantitative benchmarks, of the cover of plant functional groups, which we collected from ESD's were very narrow (Figure 1, top panel). In many of these instances the values reported in ESD's were more narrow than the uncertainty of the estimates of the true value of the population gleaned from a single AIM plot. It is apparent that several ESD developers did not emphasize the natural variability of the benchmarks while generating the vegetation benchmarks. This may be due to them only collecting quantitative vegetation data at a single point in time within the Ecological Site, accordingly it seems in multiple instances they may only have had a point of datum, and did not feel comfortable estimate the variation in the system. 
 
 \begin{wraptable}{l}{53mm}
     \begin{tabular}{c|c|c}
@@ -29,7 +30,7 @@ The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to
     \label{Expected Variation of Benchmarks}
 \end{wraptable}
 
-While the approach described above is prudent in the development of an ESD, it is not prudent for us to assume such narrow ranges of variation. Ranges this narrow may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. This can lead to a misleading assessment of land health conditions.
+While the approach described above is prudent in the development of an ESD, it is not prudent for us to assume such narrow ranges of variation while evaluating land health. Benchmarks ranges which are very narrow may unduly penalize estimates of the amount of land under analysis which are meeting condition benchmarks. This can lead to a misleading assessment of land health conditions.
 
 For example, if we seek to determine if plots within an ESD are meeting a standard - such as having from 20 - 30% grass cover, than given the time frame under which we sampled, plots with 20% grass cover have meet this condition. However, if this range of grass cover was reported as 24-26% than, a plot within the noted ranges of variation may not meet the standards. Here we seek to identify and broaden these estimates, we will use a simple method of *imputing* values in the context of *feature engineering*. A *linear model* will be fit to the benchmark values, which contain realistic ranges, and then the slope of this model will be used to fill in the missing values.  
 
@@ -126,7 +127,7 @@ rm(bm)
   \caption{Original data (top), with values without sufficient variability beneath the black line. Predictions from linear models (middle). Results (bottom).}
 \end{wrapfigure}
 
-Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$. We believed that the variation associated with each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of them decrease. 
+Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$. We believed that the variation associated with each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of the benchmarks decrease. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
 
@@ -162,7 +163,7 @@ predplot <- ggplot(prediction, aes(x = MEAN, y = fit, color = COVER_TYPE)) +
 rm(predict_data)
 ```
 
-This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the range of cover estimates. Based on these data it found moderate evidence that functional type has a effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was slight evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. However, this effect was much weaker than the additive co-variate of functional type; and the final results nearly exclude the term. For every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
+This simple model served to explain a moderate amount ($r^2$  = `r round(broomSUM$r.squared,2)`) of the variation in the range of cover estimates. Based on these data it found moderate evidence that functional type has a effect on the slope of the trend line (p = `r round(anovaTABLE$p[2], 4)`), and there was slight evidence (p = `r round(anovaTABLE$p[1], 4)`) that increasing the mean of the values had a negative effect on the observed variation. However, this effect was much weaker than the additive co-variate of functional type; and the final results nearly exclude the term. Contratry to our expectations, for every one percent increase in the mean of the benchmark values the percent range in variation of the estimates increased by `r round(model$coefficients[['MEAN']], 3)` percent. 
 
 ```{r Add predicted ranges to dataset}
 
