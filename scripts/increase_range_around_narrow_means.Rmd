@@ -26,7 +26,7 @@ The quantitative benchmarks of Ecological Site Descriptions (ESD's) are meant to
       31 -  50 & <   6 & 15.0$\%$ \\ \hline
       51 - 100 & < 7.5 & 10.0$\%$ \\ \hline
     \end{tabular}
-    \caption{* calculated as the \textit{range} divided by the midpoint of the \textit{mean} multiplied by 100 to gather a percentile $\frac{max(Range)} {\text{midpoint( Mean)}} * 100$ }
+    \caption{* calculated as $\frac{max(Range)} {\text{midpoint( Mean)}} * 100$ }
     \label{Expected Variation of Benchmarks}
 \end{wraptable}
 
@@ -121,12 +121,6 @@ predict_data <- bm %>%
 rm(bm)
 ```
 
-\begin{wrapfigure}{r}{0.4\textwidth}
-  \centering
-    \includegraphics[width=0.4\textwidth]{../results/graphics/Benchmark_Ranges.png}
-  \caption{Original data (top), with values without sufficient variability beneath the black line. Predictions from linear models (middle). Results (bottom).}
-\end{wrapfigure}
-
 Ranges of estimated benchmark variation were estimated as being too low if they fell within the ranges in Table 1 & Figure 1 *top panel*. These `r nrow( distinct(predict_data, ECO.SITE, COVER_TYPE) )` values were removed from the initial data set. The remaining `r nrow( distinct(keep_ranges, ECO.SITE, COVER_TYPE) )` observations were used as **training** data for the linear model:  $\text{lm(Range} \sim  \text{Mean + Functional Group)}$. We believed that the variation associated with each measurement of range would decrease as the mean cover increases. In other words, as the mean of the cover estimate get's larger, the percent variation of the range of the benchmarks decrease. 
 
 ```{r Model the Range of Variation for Estimates of Functional Group Covers}
@@ -173,7 +167,7 @@ final_values <- prediction %>%
          COVER_RANGE = 'MODELLED') %>% 
   select(ECO.SITE:COVER, COVER_RANGE) %>% 
   bind_rows(., keep_ranges)  %>% 
-  group_by(ECO.SITE, COVER_TYPE) %>%  
+  group_by(ECO.SITE, COVER_TYPE) %>%
   slice(rep(1:n(), each = 2))  %>%   
   mutate(
     ESTIMATE = c('LOWER', 'UPPER'),
@@ -222,13 +216,19 @@ rm(p)
 
 Once the linear model was *fit*, the removed data points had both the Mean, or midpoint of their cover estimates, and functional types used together to predict what the Range of cover estimates would be for an ESD (Figure 1 middle panel). These estimates were then combined with the original data which meet the desired range of cover information to provide an altered quantitative benchmark data set (figure 1 bottom panel & figure 2.
 
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+    \includegraphics[width=0.5\textwidth]{../results/graphics/Benchmark_Ranges.png}
+  \caption{Original data (top), with values without sufficient variability beneath the black line. Predictions from linear models (middle). Results (bottom).}
+\end{wrapfigure}
+
 For example, for the shrub cover benchmark which had a midpoint (mean) cover of 40% (Figure 1, top panel), and a range of ~2%, had a range of 38-42%. We widened this value to roughly 27-53%, maintaining the midpoint of 40%. After performing this process for all Ecological Site Descriptions which had narrow benchmarks (those beneath the dashed line in Figure 1, top panel), we recombined all functional group benchmarks as shown in Figure 1 panel 3, and figure 2.
 
 ```{r remove the plots}
 rm(rawplot, predplot, finalplot, legend, benchmarks)
 ```
 
-```{r Display per ESD functional cover estimates, fig.cap = 'Initial and Calculated ESD Ranges', out.width="85%"}
+```{r Display per ESD functional cover estimates, fig.cap = 'Initial and Calculated ESD Ranges', out.width="85%", eval = F}
 
 final_values %>% 
   group_by(ECO.SITE) %>% 

@@ -34,7 +34,7 @@ An important attribute of an Ecological Site Description (ESD) are *benchmarks*,
 >  
 > `r tufte::quote_footer('--- Karl & Herrick 2010')`
 
-We endeavor to make all management decisions based on the quantitative benchmarks in ESD's. Here we summarize the current levels of completion of ESD's across the UFO field office. As our management objectives rely on these benchmarks values to determine whether our land is within the range of natural variability, they are an essential component of this.
+We endeavor to make all management decisions based on the quantitative benchmarks in ESD's. Here we summarize the current levels of completion of ESD's across the UFO field office. As our management objectives rely on these benchmarks to determine whether our land is within the range of natural variability, they are an essential component of this.
 
 ```{r load libraries}
 library(tidyverse)
@@ -140,7 +140,7 @@ Ideally, it would be possible to correlate every single AIM plot to an Ecologica
 
 Of the `r plots_sampled` plots sampled by the AIM crews `r correlated` were correlated to an ecological site, with a total of `r toString(no.ES)` unique Ecological Sites being sampled in the first AIM sample frame. As can be seen in Figure 1, most plots are located in just a few Ecological Sites, and most Ecological Sites had only a few plots sampled in them. As the plot locations were randomly stratified, this indicates that a few Ecological Sites make up much of the the Field Office. A few of the most common Ecological Sites are missing completed Descriptions. The lack of these few descriptions disproportionately affects the number of plots with existing quantitative benchmarks. 
 
-Of all `r plots_sampled` plots sampled the total with the full set of quantitative benchmarks is 88. Roughly `r paste0(round((1 - correlated / plots_sampled) * 100, 0), '%')` of plots were not correlated to and Ecological Site, a proportion close to the 15% tolerance for inclusions across the map units. Of the plots which were correlated 47 were in Ecological Sites which do not yet have an Ecological Site Description which has made it to the publicly available draft stage. Of the 190 plots with ESD's, only 82 of these have quantitative benchmarks. Because of this, a variety of approaches will be used to estimate the quantitative benchmark values associated with many Ecological Sites. With the exception of the vegetation benchmarks, these will be discussed in each section.
+Of all `r plots_sampled` plots sampled the total with the full set of quantitative benchmarks is 88. Roughly `r paste0(round((1 - correlated / plots_sampled) * 100, 0), '%')` of plots were not correlated to an Ecological Site, a proportion close to the 15% tolerance for inclusions across the map units. Of the plots which were correlated 47 were in Ecological Sites which do not yet have an Ecological Site Description which has made it to the publicly available draft stage. Of the 190 plots with ESD's, only 82 of these have quantitative benchmarks. Because of this, a variety of approaches will be used to estimate the quantitative benchmark values associated with many Ecological Sites. With the exception of the vegetation benchmarks, these will be discussed in each section.
 
 ![The fate of plots regarding Quantitative Benchmarks](../results/graphics/Sankey_plots.png){height=55%, width=55%}
 
